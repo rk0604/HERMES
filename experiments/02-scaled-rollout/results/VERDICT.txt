@@ -1,0 +1,35 @@
+==========================================================================
+RESULT  (4 seeds, 25-step blind rollout, 48px frames)
+==========================================================================
+
+arm                                  err h=1  err h=25    growth
+A · task + reconstruction              0.795     3.095     3.94x
+B · task only                          0.804     3.067     3.90x
+C · task + scene aux (no pixels)       0.932     3.473     3.81x
+D · task + next-latent (no decoder)    16.750    18.185     1.09x
+baseline: hold last                    1.396    22.573    16.17x
+baseline: linear                       0.613    40.126    65.44x
+
+1. LEVEL   most accurate at h=25 : B · task only
+           the task-only arm is the most accurate arm.
+
+2. RATE    slowest degradation : D · task + next-latent (no decoder) (1.09x)
+           task-only grows 3.90x vs 3.94x for A_recon.
+           -> B degrades SLOWER than the reconstruction arm.
+
+3. ROBUST  per-horizon sign agreement across the 4 seeds:
+           B vs A_recon   unanimous at 15/25 horizons; at h=25, 2/4 seeds put B behind
+           B vs C_scene   unanimous at 25/25 horizons; at h=25, 0/4 seeds put B behind
+           B vs D_latent  unanimous at 25/25 horizons; at h=25, 0/4 seeds put B behind
+
+4. CONTROL is the benefit about PIXELS or just about a 2nd loss?
+           benefit over task-only at h=25, in px:
+             reconstruction (A) : -0.027
+             scene aux, no pixels (C) : -0.405
+             next-latent, no decoder (D) : -15.118
+           -> no arm shows a clear benefit over task-only.
+
+==========================================================================
+Read points 1 and 2 as separate claims. 'Worse' and 'degrades
+faster' are different questions and can disagree.
+==========================================================================

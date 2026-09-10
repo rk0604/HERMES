@@ -1,0 +1,7 @@
+# HERMES Boundary Lab -- core dependencies
+# CPU-only is sufficient for the demo; Colab will pull its own CUDA build.
+torch>=2.2
+numpy>=1.26
+streamlit>=1.32
+matplotlib>=3.8
+pytest>=8.0
