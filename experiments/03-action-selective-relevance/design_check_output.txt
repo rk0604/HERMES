@@ -1,0 +1,11 @@
+damping 0.95, max accel 0.0025: terminal speed 0.050/step, full-brake stop 13.5 steps
+100 episodes, T=40, CEM 500 samples / 50 elites / 6 iters
+policy          H   ret/step  normalised goal choice
+noop            -     -0.419          0%         51%
+random          -     -0.431         -2%         50%
+oracle          1     -0.016         73%        100%
+oracle          4     +0.089         92%        100%
+oracle         10     +0.137        100%        100%
+colour_blind   10     -0.158         47%         45%
+wrong_goal     10     -0.441         -4%          0%
+(81s; normalised: floor = max(no-op, random) -> 0%, oracle H=10 -> 100%)
