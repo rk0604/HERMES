@@ -8,8 +8,9 @@ ablation can be written as a small, precise change instead of a guess.
 
 * **Which code.** All `dreamerv3/...` and `embodied/...` citations refer to upstream
   `github.com/danijar/dreamerv3` at commit **`e3f02248693a79dc8b0ebd62c93683888ddaccfe`**
-  (2026-05-25, "Fix Atari frame maxpooling on reset"). They have **not** yet been checked
-  against the HERMES fork. If the fork is at a different commit, line numbers may shift.
+  (2026-05-25, "Fix Atari frame maxpooling on reset"), which is exactly what the notebook
+  clones. The core files (`agent.py`, `rssm.py`, `configs.yaml`) were last changed in
+  early 2025; the two patches in this folder are the only local changes.
 * **Helper libraries.** DreamerV3 depends on three small libraries by the same author
   that are not in the repo: `elements` (config, flags, checkpointing, logging), `ninjax`
   (the module system on top of JAX) and `scope` (log viewer). `requirements.txt` only
@@ -330,8 +331,11 @@ and the paper's own version of this ablation (stop-gradient) is not exposed.**
    information the latent still carries without being shaped by pixels. That is the
    DreamerV3-scale analogue of the background-readability R² in Experiment 2. Under both
    `rec: 0` and `rec_grad: False`, the gradient reaching encoder and RSSM from the image
-   term is zero, so the two should produce identical representation updates. That can be
-   asserted in code on one batch.
+   term is zero, so the two should produce identical representation updates.
+
+   **This is what was done.** `rec_grad.patch` in this folder makes exactly this change
+   plus the three named blocks `abl_novalue`, `abl_norewval`, `abl_norecon`, and
+   `inspect_agent.py` asserts the zero gradient on one batch (§17).
 
 ## 9. Imagination
 
@@ -537,16 +541,54 @@ are **not** implied by the block names. The optimizer prints the true count at s
   installs `jax[cuda]==0.5.0` first and then `requirements.txt`, which would downgrade it
   (`Dockerfile`, "Requirements" section).
 
-## 17. Uncertainties to resolve in the notebook
+## 17. Verified by running (2026-09-15, local CPU, `debug` configuration)
 
-1. Line numbers are for upstream `e3f0224`, not the HERMES fork.
-2. `elements`, `ninjax`, `scope` versions read may differ from what gets installed.
-3. Whether `rec: 0` saves any compute (XLA dead-code elimination).
-4. Whether optimizer state is in the checkpoint.
-5. Whether `bfloat16` runs, and how fast, on the GPU Colab assigns. My expectation, not
-   verified, is that pre-Ampere cards like the T4 lack native bfloat16 support.
-6. Whether the `scope` viewer is reachable from Colab.
-7. The encoder output size and latent sizes in §3 and §14 are arithmetic; the shape dump
-   will confirm them.
-8. From the paper I read only the text and captions of the learning-signal ablation, not
-   the curve values.
+The notebook and `inspect_agent.py` in this folder were run against upstream `e3f0224`
+with the pinned versions listed in `README.md`. What that settled:
+
+* **The code is upstream, not a fork.** The decision was to use `e3f0224` directly, so
+  every line number above is exact. The three ablation switches are `reward_grad`,
+  `repval_grad` (existing) and `rec_grad` (added by `rec_grad.patch`, the §8 change).
+* **The gradient-flow claims of §12 hold**, measured with `nj.grad` per loss per module:
+  under `abl_norecon` the image loss sends exactly zero gradient into encoder and RSSM,
+  under `abl_norewval` the reward and replay-value losses do, under `abl_novalue` the
+  replay-value loss does, and no ablation changes any other row. Actor and critic losses on
+  imagined states send zero into the latent in every arm, as `ac_grads: False` implies.
+* **Two initialisation facts the table exposed.** The reward and value heads are
+  zero-initialised (`outscale: 0.0`, `configs.yaml:98,101`), so at step 0 they send no
+  gradient into the latent regardless of any flag; the gradient test perturbs those
+  kernels to test the path. And both KL terms sit at the 1-nat floor at initialisation
+  (`dyn` values all exactly 1.0), so free bits silence them until the posterior and prior
+  drift apart; a few positions land a rounding error above 1.0 in one of the two KL
+  computations, which is noise, not an asymmetry.
+* **Shapes** for the `debug` block match the arithmetic of §3 and §14: tokens
+  `(B, T, 128)` (= 4·4·8), `h` `(B, T, 8)`, `z` `(B, T, 2, 4)`, head input `(B, T, 16)`,
+  imagined `ẑ` `(B·T, 15, 2, 4)`. `z` and `ẑ` are exactly one-hot. Full-size shapes will be
+  observed on Colab by the same script.
+* **Checkpoint contents (uncertainty 4 resolved).** `agent.params` contains `opt/state/…`,
+  `slowval/…` and the normaliser variables alongside the network weights, and
+  `agent.save()` writes all of it, so optimizer state is checkpointed.
+* **Checkpoint naming.** Folders are `<timestamp>` without the step suffix described at
+  `elements/checkpoint.py:102-105`: `cp.step = step` in `train.py:84` goes through
+  `Checkpoint.__setattr__` (`checkpoint.py:61-69`), which registers `step` as a saveable
+  and never sets `_step`. `step.pkl` inside the folder holds the counter.
+* **No checkpoint at the end of training.** `train.py:95-119` saves only on the
+  `save_every` clock; a finished run's last checkpoint can be up to that many seconds
+  stale, and re-running the command resumes from it and re-logs the steps in between.
+* **`Train cost analysis: No available`** under JAX 0.5.0: `compiled.cost_analysis()`
+  no longer returns a list, the `except` at `embodied/jax/agent.py:492` catches it.
+* **`ale_py` ≥ 0.10 breaks the Atari wrapper** (`atari.py:54`: `bytes` key and
+  `numpy.int64`); `atari_ale_compat.patch` fixes it and the Atari100k `debug` run passes.
+* **`scope` outputs are readable without the viewer.** `scope.Reader(logdir)` returns
+  `(steps, values)` for floats and `(steps, files)` for text and video; the open-loop
+  video decodes with `av` to `(T, H, 6·W, 3)`; `report/params/summary`, `timer` and
+  `usage/nvsmi/output` are text and the last one records `nvidia-smi` for the run.
+  Decision: parse the files, do not run the web viewer.
+* **Windows only:** `elements.LocalPath.glob` yields backslash paths, so
+  `Checkpoint._cleanup` deletes the checkpoint it just wrote. Irrelevant on Colab.
+
+Still open, to be settled on Colab: whether the pinned JAX CUDA wheel installs on the
+Python that Colab ships; bfloat16 speed on the assigned GPU (uncertainty 5); the real
+timing and therefore the affordable model size; and the curve values of the paper's
+ablation, which I only know from the figure captions (uncertainty 8). The `scope` viewer
+(uncertainty 6) is not needed and was not tried.

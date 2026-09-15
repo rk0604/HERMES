@@ -1,0 +1,39 @@
+diff --git a/dreamerv3/agent.py b/dreamerv3/agent.py
+index 0cada34..7cfc8ab 100644
+--- a/dreamerv3/agent.py
++++ b/dreamerv3/agent.py
+@@ -168,7 +168,7 @@ class Agent(embodied.jax.Agent):
+     losses.update(los)
+     metrics.update(mets)
+     dec_carry, dec_entries, recons = self.dec(
+-        dec_carry, repfeat, reset, training)
++        dec_carry, sg(repfeat, skip=self.config.rec_grad), reset, training)
+     inp = sg(self.feat2tensor(repfeat), skip=self.config.reward_grad)
+     losses['rew'] = self.rew(inp, 2).loss(obs['reward'])
+     con = f32(~obs['is_terminal'])
+diff --git a/dreamerv3/configs.yaml b/dreamerv3/configs.yaml
+index 786b67e..68a2f24 100644
+--- a/dreamerv3/configs.yaml
++++ b/dreamerv3/configs.yaml
+@@ -112,6 +112,7 @@ defaults:
+     valnorm: {impl: none, rate: 0.01, limit: 1e-8}
+     advnorm: {impl: none, rate: 0.01, limit: 1e-8}
+     reward_grad: True
++    rec_grad: True
+     repval_loss: True
+     repval_grad: True
+     report: True
+@@ -218,3 +219,13 @@ debug:
+     .*\.hidden: 3
+     .*\.blocks: 4
+     .*\.depth: 2
++
++abl_novalue:
++  agent.repval_grad: False
++
++abl_norewval:
++  agent.reward_grad: False
++  agent.repval_grad: False
++
++abl_norecon:
++  agent.rec_grad: False
