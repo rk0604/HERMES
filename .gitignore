@@ -34,6 +34,10 @@ references/*.pdf
 experiments/01-toy-latents/results/rollout_predictions.npz
 experiments/01-toy-latents/results/demo.html
 experiments/*/results/ckpt/
+# Whole run folders downloaded from Google Drive (checkpoints, cached evaluations,
+# datasets: hundreds of MB). Only their results/ subfolder is committed, copied out
+# next to the notebook that produced it.
+experiments/*/exp3-*-results-*/
 *.log
 
 .DS_Store

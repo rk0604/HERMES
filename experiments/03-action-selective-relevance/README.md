@@ -14,14 +14,16 @@ This experiment closes that gap in three ways:
 3. **Selective relevance.** One piece of colour is essential and another is useless, so a
    model that discards colour wholesale now fails visibly.
 
-**Current state: v1 has been run at `medium` scale, and its comparison is not
-interpretable. v2 exists to fix that and has not been run yet.** Both notebooks are kept;
-they write to separate Drive folders.
+**Current state: v1 and v2 have both been run at `medium` scale. Neither supports a claim
+about reconstruction versus reward only. One narrow observation replicates across both
+runs: reward only training strips task-irrelevant background detail that reconstruction
+keeps. v3 is being built to fix what v2 exposed.** All notebooks are kept; each writes to
+its own Drive folder.
 
 | notebook | source | status |
 | :--- | :--- | :--- |
 | `hermes_exp3_colab.ipynb` | `nb_src.py` | v1, run once at `medium`; results in `hermes_exp3_medium_results/` |
-| `hermes_exp3_v2_colab.ipynb` | `nb_src_v2.py` | **v2, run this one**; not yet run |
+| `hermes_exp3_v2_colab.ipynb` | `nb_src_v2.py` | v2, run once at `medium`; results in `hermes_exp3_v2_medium_results/` |
 
 ## What the v1 medium run showed
 
@@ -95,6 +97,62 @@ Measurements taken while building v2, each from a real run:
   Run `medium` to check the gate, but make selectivity claims from the `full` run.
   Per-slot distractor positions stay unreadable at both sizes, which is the direct evidence
   that v1's by-slot target was ill posed.
+
+## What the v2 medium run showed
+
+Three seeds, 32 px, a 120 epoch ceiling, and the same 200 planning episodes as v1 (every
+baseline matches v1 exactly). Results in `hermes_exp3_v2_medium_results/`.
+
+What holds up, and now replicates across both runs:
+
+* **B strips irrelevant background detail.** On the seeds that passed the gate, background
+  saturation and brightness read 0.00 and 0.00 from B, and the shade within the warm or cool
+  band 0.00 and 0.00. Arm A keeps 0.61 and 0.69 (band shade 0.72 and 0.68), the untrained
+  weights read 0.59 to 0.66 (0.43 to 0.83), and the CNN ceiling 0.91. v1 gave B 0.00 in all
+  three seeds. B's one failed seed, which never learned the task, still reads the band shade
+  at 0.90, so the stripping comes from learning.
+* **The negative control now learns its target**: C reads the distractor heatmap at 0.70 to
+  0.83, where v1's C never encoded distractors at all.
+
+What blocks a claim:
+
+1. **The early-stopping rule stopped four of twelve runs on the initial plateau.** A seed 0
+   (epoch 40), B seed 2 (35) and C seeds 0 and 2 (30 and 35) were stopped with held-out reward
+   R squared still at or below zero. Runs that learned broke out between epochs 20 and 35: D
+   seed 2 sat at -0.04 at epoch 30 and reached 0.72 at epoch 35. The convergence flag called
+   the stopped runs converged, because a flat plateau looks converged. Every gate failure in
+   this run is an artefact of that rule, and A versus B rests on a single paired seed.
+2. **The verdict's selection criteria were judged on that single seed**, which "in every
+   usable seed" passes trivially. Its "SELECTION" line is not evidence.
+3. **Selectivity does not separate A from B.** The inactive goal is readable in principle
+   (ceiling 0.84) and every trained arm drops it: A 0.06 and 0.00, B 0.00 and 0.01, D 0.00,
+   0.12 and 0.00. The active goal is level: A 0.85 and 0.88, B 0.85 and 0.90. A's decoder
+   barely draws the goals (contrast kept 0.05 to 0.32 of the real frame's).
+4. **The CNN ceiling is not a ceiling for every target.** It reads the distractor heatmap at
+   0.24 while C reads it at 0.70 to 0.83: one network trained on thirteen target groups at once
+   under-serves some of them.
+5. **Planning regressed against v1 on identical episodes.** On passing seeds B's goal choice
+   fell from 1.00 and 0.995 to 0.775 and 0.87, and it stopped 7 to 9 px from the goal instead
+   of about 3. D fell from 0.995 to 1.00 down to 0.885 to 0.95, stopping 5 to 7 px away instead
+   of 2 to 4. Offline reward R squared on the held-out set is comparable in both runs (about
+   0.89 to 0.91 for B), but imagined reward became more optimistic (bias 0.30 to 0.45 for B,
+   against 0.16 to 0.24 in v1). v2 changed the data, the stopping rule and C's target together,
+   so the cause is not identified; the parking data is the leading suspect.
+6. **The shift test is still flat**: the mean change in return under the distractor shifts is
+   at most 0.008 for any arm.
+
+## Next: v3
+
+1. **Stopping that cannot end a run on the plateau**: patience only starts counting once an arm
+   has learned (held-out R squared at least 0.5), a higher minimum epoch count, and runs that
+   never learn within the ceiling reported as such rather than as converged.
+2. **A ceiling that is a ceiling**: one network per target group, flagged invalid for any
+   target an arm reads better than it does.
+3. **No criteria on fewer than three usable paired seeds**; the verdict says "insufficient
+   seeds" instead.
+4. **A parking ablation** to identify the planning regression: B and D trained with and without
+   the planner-parked episodes, compared on identical planning episodes.
+5. **Five seeds.**
 
 ## The environment
 
@@ -221,8 +279,9 @@ reconstruction arm at 32 px.
 
 | path | purpose |
 | :--- | :--- |
-| `hermes_exp3_v2_colab.ipynb` | **the current experiment**, self contained, drop into Colab |
+| `hermes_exp3_v2_colab.ipynb` | v2, run once at `medium` |
 | `nb_src_v2.py` | v2 source in plain Python |
+| `hermes_exp3_v2_medium_results/` | the v2 medium run: CSVs, figures, GIFs, VERDICT.txt |
 | `hermes_exp3_colab.ipynb`, `nb_src.py` | v1, kept unchanged for reference |
 | `build_notebook.py` | regenerates a notebook: `python build_notebook.py nb_src_v2.py` |
 | `design_check.py`, `design_check_momentum.py` | numpy design checks behind the dynamics constants |

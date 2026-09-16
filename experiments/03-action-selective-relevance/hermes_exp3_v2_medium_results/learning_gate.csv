@@ -1,0 +1,13 @@
+seed,arm,r2_k1>0.5,r2_k15>0,beats_hold_at_H,not_constant,return>floor,latent_ok,passed,converged,epochs_trained,warn_error_falls_with_horizon,r2_k1,r2_k15,return_ci95_lo_vs_floor
+0,A_recon,False,True,False,True,False,True,False,True,40,False,0.11534172296524048,0.11459845304489136,-0.007415681227575988
+0,B_task,True,True,True,True,True,True,True,True,75,False,0.929317831993103,0.8855577111244202,0.14156046696007252
+0,C_scene,False,False,False,True,False,True,False,True,30,False,-0.09921741485595703,-0.17497575283050537,-0.017118455655872823
+0,D_latent,True,True,True,True,True,True,True,True,85,False,0.9531816840171814,0.9168649315834045,0.17538783960044385
+1,A_recon,True,True,True,True,True,True,True,True,95,False,0.9096929430961609,0.8822059631347656,0.06472241133451462
+1,B_task,True,True,True,True,True,True,True,True,85,False,0.9489638209342957,0.91080641746521,0.16794136054813863
+1,C_scene,True,True,True,True,True,True,True,True,120,False,0.5467169284820557,0.5610423684120178,0.045187777001410724
+1,D_latent,True,True,True,True,True,True,True,True,60,False,0.9466144442558289,0.9079198241233826,0.2515596553683281
+2,A_recon,True,True,True,True,True,True,True,True,75,False,0.9604964256286621,0.920531153678894,0.19921029210090638
+2,B_task,False,True,False,True,False,True,False,True,35,False,0.17943167686462402,0.18243491649627686,-0.007600361807271838
+2,C_scene,False,False,False,True,False,True,False,False,35,False,0.009879708290100098,-0.033364176750183105,-0.0050535430083982645
+2,D_latent,True,True,True,True,True,True,True,True,80,False,0.9300249814987183,0.89621901512146,0.156674624979496

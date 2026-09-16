@@ -1,0 +1,115 @@
+==============================================================================
+HERMES EXPERIMENT 3 (v2) VERDICT   scale=medium  seeds=3  frames=32px  planning episodes=200
+==============================================================================
+
+0. LEARNING GATE
+   A · reward + reconstruction            passed 2/3 seeds   converged 3/3   -> claims use seeds [1, 2]
+   B · reward only                        passed 2/3 seeds   converged 3/3   -> claims use seeds [0, 1]
+   C · reward + irrelevant-scene aux      passed 1/3 seeds   converged 2/3   -> claims use seeds [1]
+   D · reward + next-latent (EMA)         passed 3/3 seeds   converged 3/3
+   !! some runs hit the epoch ceiling while still improving; raise CFG.epochs:
+      seed 2 C_scene (trained 35 epochs)
+
+1. SPEED - epochs needed to reach the held-out plateau (v2 measures this)
+   A · reward + reconstruction            epochs   70.0   to R2 0.8   35.0   final R2 0.603   5.8 min
+   B · reward only                        epochs   65.0   to R2 0.8   32.5   final R2 0.622   3.0 min
+   C · reward + irrelevant-scene aux      epochs   61.7   to R2 0.8  never   final R2 -0.074   2.9 min
+   D · reward + next-latent (EMA)         epochs   75.0   to R2 0.8   36.7   final R2 0.947   4.4 min
+
+2. LEVEL - planning return (real reward per step, mean +/- sd over seeds)
+   no-op (zero action)                    -0.457
+   random actions                         -0.470
+   oracle (true state, same planner)      +0.160
+   oracle, 1-step planning                -0.001
+   oracle, colour-blind                   -0.145
+   oracle, wrong goal                     -0.461
+   A · reward + reconstruction            -0.357 +/- 0.112   normalised 0.16   goal-choice 0.69   success 0.02   stops 11.1 px away   [gate failed in some seeds]
+   B · reward only                        -0.339 +/- 0.102   normalised 0.19   goal-choice 0.70   success 0.03   stops 10.3 px away   [gate failed in some seeds]
+   C · reward + irrelevant-scene aux      -0.438 +/- 0.035   normalised 0.03   goal-choice 0.50   success 0.01   stops 14.2 px away   [gate failed in some seeds]
+   D · reward + next-latent (EMA)         -0.240 +/- 0.053   normalised 0.35   goal-choice 0.91   success 0.05   stops 6.7 px away
+   return(A) - return(B): mean -0.1083 ; B worse in 0/1 seeds; seed-to-seed sd nan
+      -> only 1 usable seed(s) - says nothing about robustness
+   return(C) - return(B): mean -0.1302 ; B worse in 0/1 seeds; seed-to-seed sd nan
+      -> only 1 usable seed(s) - says nothing about robustness
+   return(D) - return(B): mean +0.0601 ; B worse in 2/2 seeds; seed-to-seed sd 0.0387
+      -> only 2 usable seed(s) - says nothing about robustness
+   reward prediction R2 at k=1 (mean over seeds): A 0.662  B 0.686  C 0.152  D 0.943
+
+3. RATE - reward R2 lost between k=1 and k=15 (a separate question from level)
+   A · reward + reconstruction            R2 drop 0.023   MSE growth 1.81x
+   B · reward only                        R2 drop 0.026   MSE growth 1.83x
+   C · reward + irrelevant-scene aux      R2 drop 0.035   MSE growth 1.30x
+   D · reward + next-latent (EMA)         R2 drop 0.036   MSE growth 2.10x
+   drop(B) - drop(A): mean +0.0107 R2; B degrades more in 1/1 seeds; seed-to-seed sd nan
+      -> only 1 usable seed(s) - says nothing about robustness
+   drop(B) - drop(C): mean +0.0525 R2; B degrades more in 1/1 seeds; seed-to-seed sd nan
+      -> only 1 usable seed(s) - says nothing about robustness
+   drop(B) - drop(D): mean +0.0035 R2; B degrades more in 1/2 seeds; seed-to-seed sd 0.0056
+      -> only 2 usable seed(s) - says nothing about robustness
+
+4. ROBUST - do the seeds agree on the sign?
+   B vs A (on 1 usable seeds): level-1 sign unanimous at 16/16 horizons; planning: B worse in 0/1 seeds
+   B vs C (on 1 usable seeds): level-1 sign unanimous at 16/16 horizons; planning: B worse in 0/1 seeds
+   B vs D (on 2 usable seeds): level-1 sign unanimous at 5/16 horizons; planning: B worse in 2/2 seeds
+
+5. SELECTIVE RELEVANCE
+   goal-choice accuracy: oracle 1.00, colour-blind oracle 0.52 (what ignoring the background looks like)
+   A · reward + reconstruction            goal-choice 0.69
+   B · reward only                        goal-choice 0.70
+   C · reward + irrelevant-scene aux      goal-choice 0.50
+   D · reward + next-latent (EMA)         goal-choice 0.91
+   probe scores (MLP on z, mean over seeds). 'ceiling' = what a conv encoder of
+   the same architecture reads from the frame when trained to; a target it
+   scores low on cannot be tested at all:
+     selector_bit               ceiling 1.00 | init 0.98  A 0.99  B 0.99  C 0.64  D 1.00
+     active_goal                ceiling 0.84 | init 0.00  A 0.58  B 0.58  C 0.09  D 0.83
+     inactive_goal              ceiling 0.84 | init 0.00  A 0.02  B 0.00  C 0.00  D 0.04
+     distractor_heatmap         ceiling 0.24 | init 0.00  A 0.00  B 0.01  C 0.74  D 0.00   <- UNREADABLE even by the ceiling: not testable
+     distractor_positions       ceiling 0.00 | init 0.00  A 0.00  B 0.00  C 0.28  D 0.00   <- UNREADABLE even by the ceiling: not testable
+     background_sat_val         ceiling 0.91 | init 0.63  A 0.46  B 0.00  C 0.00  D 0.09
+     background_hue_within_band ceiling 0.91 | init 0.69  A 0.70  B 0.30  C 0.00  D 0.62
+   selectivity = R2(active goal) - R2(inactive goal), mean over seeds:
+     z linear: init +0.00  A +0.42  B +0.44  C +0.11  D +0.52
+     z mlp   : init +0.00  A +0.56  B +0.58  C +0.09  D +0.79
+     h linear: init +0.00  A +0.49  B +0.54  C +0.14  D +0.63
+     h mlp   : init +0.00  A +0.53  B +0.57  C +0.12  D +0.83
+   criteria (stated in advance), judged on seeds [1]:
+     [x] B picks the active goal far more often than a colour-blind planner (by > 0.15)
+     [x] B selectivity (MLP, z) > 0 in every usable seed
+     [x] B selectivity > A selectivity in every usable seed
+     [x] B drops irrelevant background detail below the untrained weights
+     [x] that background test is meaningful (readable from pixels)
+   -> B keeps what reward needs and drops irrelevant detail: SELECTION,
+      not blanket discarding.
+
+6. CONTROLS
+   did C learn its irrelevant target? distractor heatmap R2: C 0.74 vs B 0.01 (ceiling 0.24)
+   return(C) - return(B): mean -0.1302 ; B worse in 0/1 seeds; seed-to-seed sd nan
+      -> only 1 usable seed(s) - says nothing about robustness
+      (below 0 = forcing irrelevant content costs return)
+   D_latent trained (final latent per-dim spread 0.700).
+   does reconstruction actually DRAW each object? contrast kept vs the real frame:
+     agent 0.35  goals 0.22  distractors 0.10
+     -> reconstruction largely ignores: goals, distractors. 'Recon encodes
+        everything' is false here, which limits what A-vs-B can show.
+
+7. MODEL QUALITY WHERE THE PLANNER USES IT  (v2 added the parking data for this)
+   reward RMSE in raw units at k=1, behaviour data -> planner trajectories:
+   A · reward + reconstruction            0.164 -> 0.466   optimism bias +0.474 of 0.484 error
+   B · reward only                        0.159 -> 0.381   optimism bias +0.377 of 0.389 error
+   C · reward + irrelevant-scene aux      0.309 -> 0.585   optimism bias +0.600 of 0.620 error
+   D · reward + next-latent (EMA)         0.081 -> 0.275   optimism bias +0.278 of 0.289 error
+   (bias close to the whole error = the planner is exploiting the model)
+
+8. DISTRIBUTION SHIFT - drop in return vs in-distribution (mean over seeds)
+   4_distractors            A -0.002  B -0.004  C -0.008  D -0.004
+   fast_distractors         A +0.001  B -0.000  C -0.002  D +0.000
+   unseen_distractor_hues   A +0.001  B -0.004  C +0.007  D +0.002
+   heavy_pixel_noise        A +0.005  B -0.004  C -0.006  D -0.002
+   the distractor shifts move nothing, because no arm encodes distractors
+   at all (see section 5): this tests indifference, not robustness.
+
+==============================================================================
+Level and rate are different claims. A tie is a result. Failed or unconverged arms
+are failures, not findings. Every number above comes from this run's CSVs.
+==============================================================================
