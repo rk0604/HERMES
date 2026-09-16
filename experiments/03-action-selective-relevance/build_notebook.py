@@ -3,13 +3,15 @@
 nb_src.py is the source of truth: plain Python in "percent" format, where a line
 "# %% [markdown]" starts a markdown cell (each line prefixed with "# ") and "# %%"
 starts a code cell. Edit nb_src.py, then run:  python build_notebook.py
+For the v2 notebook:        python build_notebook.py nb_src_v2.py
 """
 import json
 import pathlib
+import sys
 
 HERE = pathlib.Path(__file__).parent
-SRC = HERE / "nb_src.py"
-OUT = HERE / "hermes_exp3_colab.ipynb"
+SRC = HERE / (sys.argv[1] if len(sys.argv) > 1 else "nb_src.py")
+OUT = HERE / SRC.name.replace("nb_src", "hermes_exp3").replace(".py", "_colab.ipynb")
 
 
 def to_cells(text):
