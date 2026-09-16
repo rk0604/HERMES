@@ -1,0 +1,76 @@
+==============================================================================
+HERMES EXPERIMENT 3 VERDICT   scale=medium  seeds=3  frames=32px  planning episodes=200
+==============================================================================
+
+0. LEARNING GATE
+   A · reward + reconstruction            passed in 2/3 seeds   -> FAILED, excluded from claims
+   B · reward only                        passed in 3/3 seeds
+   C · reward + irrelevant-scene aux      passed in 3/3 seeds
+   D · reward + next-latent (EMA)         passed in 3/3 seeds
+
+1. LEVEL - planning return (real reward per step, mean ± sd over seeds)
+   no-op (zero action)                    -0.457
+   random actions                         -0.470
+   oracle (true state, same planner)      +0.160
+   oracle, 1-step planning                -0.001
+   oracle, colour-blind                   -0.145
+   oracle, wrong goal                     -0.461
+   A · reward + reconstruction            -0.384 ± 0.141   normalised 0.12   goal-choice 0.60   success 0.01   [FAILED GATE]
+   B · reward only                        -0.131 ± 0.047   normalised 0.53   goal-choice 0.99   success 0.15
+   C · reward + irrelevant-scene aux      -0.114 ± 0.033   normalised 0.56   goal-choice 1.00   success 0.20
+   D · reward + next-latent (EMA)         -0.092 ± 0.051   normalised 0.59   goal-choice 1.00   success 0.22
+   return(C) - return(B): mean +0.0170 ; B worse in 2/3 seeds; seed-to-seed sd 0.0771
+      -> SMALLER than the seed spread -> treat as a tie
+   return(D) - return(B): mean +0.0383 ; B worse in 2/3 seeds; seed-to-seed sd 0.0907
+      -> SMALLER than the seed spread -> treat as a tie
+   reward prediction R² at k=1 (mean over seeds): A 0.738  B 0.944  C 0.941  D 0.943
+
+2. RATE - reward R² lost between k=1 and k=15 (a separate question from level)
+   A · reward + reconstruction            R² drop 0.020   MSE growth 1.44x
+   B · reward only                        R² drop 0.050   MSE growth 2.43x
+   C · reward + irrelevant-scene aux      R² drop 0.050   MSE growth 2.29x
+   D · reward + next-latent (EMA)         R² drop 0.044   MSE growth 2.19x
+   drop(B) - drop(C): mean -0.0001 R²; B degrades more in 2/3 seeds; seed-to-seed sd 0.0044
+      -> SMALLER than the seed spread -> treat as a tie
+   drop(B) - drop(D): mean +0.0053 R²; B degrades more in 3/3 seeds; seed-to-seed sd 0.0019
+      -> B worse in every seed
+
+3. ROBUST - do the seeds agree on the sign?
+   B vs A: level-1 sign unanimous at 16/16 horizons; planning: B worse in 0/3 seeds
+   B vs C: level-1 sign unanimous at 0/16 horizons; planning: B worse in 2/3 seeds
+   B vs D: level-1 sign unanimous at 0/16 horizons; planning: B worse in 2/3 seeds
+
+4. SELECTIVE RELEVANCE
+   goal-choice accuracy: oracle 1.00, colour-blind oracle 0.52 (what ignoring the background looks like)
+   A · reward + reconstruction            goal-choice 0.60
+   B · reward only                        goal-choice 0.99
+   C · reward + irrelevant-scene aux      goal-choice 1.00
+   D · reward + next-latent (EMA)         goal-choice 1.00
+   selectivity = R²(active goal) - R²(inactive goal), mean over seeds (init = untrained shared starting weights):
+     z linear: init +0.00  A +0.50  B +0.71  C +0.80  D +0.70
+     z mlp   : init +0.00  A +0.62  B +0.91  C +0.90  D +0.92
+     h linear: init +0.00  A +0.50  B +0.89  C +0.91  D +0.85
+     h mlp   : init +0.00  A +0.44  B +0.91  C +0.92  D +0.89
+   MLP probe on z, selector_bit          : init 0.98  A 1.00  B 0.94  C 0.82  D 1.00
+   MLP probe on z, active_goal           : init 0.00  A 0.62  B 0.92  C 0.90  D 0.92
+   MLP probe on z, inactive_goal         : init 0.00  A 0.00  B 0.00  C 0.00  D 0.00
+   MLP probe on z, distractor_positions  : init 0.00  A 0.00  B 0.00  C 0.04  D 0.00
+   MLP probe on z, distractor_hues       : init 0.00  A 0.00  B 0.00  C 0.03  D 0.00
+   MLP probe on z, background_sat_val    : init 0.63  A 0.55  B 0.00  C 0.29  D 0.02
+   -> cannot be assessed: A or B failed the learning gate.
+
+5. CONTROL
+   return(C) - return(B): mean +0.0170 ; B worse in 2/3 seeds; seed-to-seed sd 0.0771
+      -> SMALLER than the seed spread -> treat as a tie   (below 0 = forcing irrelevant content costs return)
+   D_latent trained (final latent per-dim spread 0.746).
+
+6. DISTRIBUTION SHIFT - drop in return vs in-distribution (mean over seeds)
+   4_distractors            A -0.001  B -0.001  C -0.003  D +0.000
+   fast_distractors         A +0.001  B +0.003  C +0.001  D +0.000
+   unseen_distractor_hues   A +0.001  B +0.003  C +0.001  D +0.000
+   heavy_pixel_noise        A -0.001  B -0.028  C -0.038  D -0.028
+
+==============================================================================
+Level and rate are different claims. A tie is a result. Failed arms are failures,
+not findings. Every number above comes from this run's CSVs in results/.
+==============================================================================

@@ -1,0 +1,781 @@
+seed,arm,space,probe,target,group,metric,score,score_clipped
+0,init,z,linear,agent_position,relevant,r2,0.05188363790512085,0.05188363790512085
+0,init,z,linear,agent_velocity,relevant,r2,-0.0363391637802124,0.0
+0,init,z,linear,active_goal,relevant,r2,-0.10171914100646973,0.0
+0,init,z,linear,agent_to_active_goal,relevant,r2,0.029711484909057617,0.029711484909057617
+0,init,z,linear,inactive_goal,goal-like irrelevant,r2,-0.05928158760070801,0.0
+0,init,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.04910922050476074,0.04910922050476074
+0,init,z,linear,ring_position,identity,r2,-0.14299380779266357,0.0
+0,init,z,linear,plus_position,identity,r2,-0.12278258800506592,0.0
+0,init,z,linear,distractor_positions,irrelevant,r2,-0.03974783420562744,0.0
+0,init,z,linear,distractor_hues,irrelevant,r2,-0.10390627384185791,0.0
+0,init,z,linear,background_sat_val,irrelevant,r2,0.5539003610610962,0.5539003610610962
+0,init,z,linear,background_hue_within_band,irrelevant,r2,-7720.1142578125,0.0
+0,init,z,linear,selector_bit,relevant,balanced_acc,0.9984496124031008,0.9984496124031008
+0,init,z,mlp,agent_position,relevant,r2,-0.17025959491729736,0.0
+0,init,z,mlp,agent_velocity,relevant,r2,-0.16441130638122559,0.0
+0,init,z,mlp,active_goal,relevant,r2,-0.4785029888153076,0.0
+0,init,z,mlp,agent_to_active_goal,relevant,r2,-0.2161344289779663,0.0
+0,init,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.46121084690093994,0.0
+0,init,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.2808336019515991,0.0
+0,init,z,mlp,ring_position,identity,r2,-0.5207644701004028,0.0
+0,init,z,mlp,plus_position,identity,r2,-0.36590075492858887,0.0
+0,init,z,mlp,distractor_positions,irrelevant,r2,-0.23602986335754395,0.0
+0,init,z,mlp,distractor_hues,irrelevant,r2,-0.42672204971313477,0.0
+0,init,z,mlp,background_sat_val,irrelevant,r2,0.6461691856384277,0.6461691856384277
+0,init,z,mlp,background_hue_within_band,irrelevant,r2,0.8255190849304199,0.8255190849304199
+0,init,z,mlp,selector_bit,relevant,balanced_acc,0.9972202034883721,0.9972202034883721
+0,init,h,linear,agent_position,relevant,r2,0.3049963116645813,0.3049963116645813
+0,init,h,linear,agent_velocity,relevant,r2,0.740619421005249,0.740619421005249
+0,init,h,linear,active_goal,relevant,r2,-0.27943623065948486,0.0
+0,init,h,linear,agent_to_active_goal,relevant,r2,0.08563458919525146,0.08563458919525146
+0,init,h,linear,inactive_goal,goal-like irrelevant,r2,-0.1913660764694214,0.0
+0,init,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.11226516962051392,0.11226516962051392
+0,init,h,linear,ring_position,identity,r2,-0.3957369327545166,0.0
+0,init,h,linear,plus_position,identity,r2,-0.27193963527679443,0.0
+0,init,h,linear,distractor_positions,irrelevant,r2,-0.24630975723266602,0.0
+0,init,h,linear,distractor_hues,irrelevant,r2,-0.32535219192504883,0.0
+0,init,h,linear,background_sat_val,irrelevant,r2,0.6250067949295044,0.6250067949295044
+0,init,h,linear,background_hue_within_band,irrelevant,r2,-8382.154296875,0.0
+0,init,h,linear,selector_bit,relevant,balanced_acc,0.9998062015503876,0.9998062015503876
+0,init,h,mlp,agent_position,relevant,r2,-0.08215773105621338,0.0
+0,init,h,mlp,agent_velocity,relevant,r2,0.675462007522583,0.675462007522583
+0,init,h,mlp,active_goal,relevant,r2,-0.8083213567733765,0.0
+0,init,h,mlp,agent_to_active_goal,relevant,r2,-0.3071402311325073,0.0
+0,init,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.8612991571426392,0.0
+0,init,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.3610224723815918,0.0
+0,init,h,mlp,ring_position,identity,r2,-0.960030198097229,0.0
+0,init,h,mlp,plus_position,identity,r2,-0.77659010887146,0.0
+0,init,h,mlp,distractor_positions,irrelevant,r2,-0.734838604927063,0.0
+0,init,h,mlp,distractor_hues,irrelevant,r2,-0.9585926532745361,0.0
+0,init,h,mlp,background_sat_val,irrelevant,r2,0.6059659719467163,0.6059659719467163
+0,init,h,mlp,background_hue_within_band,irrelevant,r2,0.8119215369224548,0.8119215369224548
+0,init,h,mlp,selector_bit,relevant,balanced_acc,1.0,1.0
+0,A_recon,z,linear,agent_position,relevant,r2,0.4439839720726013,0.4439839720726013
+0,A_recon,z,linear,agent_velocity,relevant,r2,-0.03402423858642578,0.0
+0,A_recon,z,linear,active_goal,relevant,r2,0.49876224994659424,0.49876224994659424
+0,A_recon,z,linear,agent_to_active_goal,relevant,r2,0.6531198024749756,0.6531198024749756
+0,A_recon,z,linear,inactive_goal,goal-like irrelevant,r2,-0.01589822769165039,0.0
+0,A_recon,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.10237234830856323,0.10237234830856323
+0,A_recon,z,linear,ring_position,identity,r2,-0.13698172569274902,0.0
+0,A_recon,z,linear,plus_position,identity,r2,0.05757349729537964,0.05757349729537964
+0,A_recon,z,linear,distractor_positions,irrelevant,r2,-0.0722343921661377,0.0
+0,A_recon,z,linear,distractor_hues,irrelevant,r2,-0.12738454341888428,0.0
+0,A_recon,z,linear,background_sat_val,irrelevant,r2,0.41555947065353394,0.41555947065353394
+0,A_recon,z,linear,background_hue_within_band,irrelevant,r2,-7002.0498046875,0.0
+0,A_recon,z,linear,selector_bit,relevant,balanced_acc,0.99921875,0.99921875
+0,A_recon,z,mlp,agent_position,relevant,r2,0.4517117738723755,0.4517117738723755
+0,A_recon,z,mlp,agent_velocity,relevant,r2,-0.3096965551376343,0.0
+0,A_recon,z,mlp,active_goal,relevant,r2,0.5755898356437683,0.5755898356437683
+0,A_recon,z,mlp,agent_to_active_goal,relevant,r2,0.6133425235748291,0.6133425235748291
+0,A_recon,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.5004435777664185,0.0
+0,A_recon,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.05753326416015625,0.0
+0,A_recon,z,mlp,ring_position,identity,r2,-0.21131384372711182,0.0
+0,A_recon,z,mlp,plus_position,identity,r2,0.17715221643447876,0.17715221643447876
+0,A_recon,z,mlp,distractor_positions,irrelevant,r2,-0.48430049419403076,0.0
+0,A_recon,z,mlp,distractor_hues,irrelevant,r2,-0.5191165208816528,0.0
+0,A_recon,z,mlp,background_sat_val,irrelevant,r2,0.4489556550979614,0.4489556550979614
+0,A_recon,z,mlp,background_hue_within_band,irrelevant,r2,0.6975868940353394,0.6975868940353394
+0,A_recon,z,mlp,selector_bit,relevant,balanced_acc,0.9992853682170542,0.9992853682170542
+0,A_recon,h,linear,agent_position,relevant,r2,0.46727174520492554,0.46727174520492554
+0,A_recon,h,linear,agent_velocity,relevant,r2,0.6981881856918335,0.6981881856918335
+0,A_recon,h,linear,active_goal,relevant,r2,0.4104740023612976,0.4104740023612976
+0,A_recon,h,linear,agent_to_active_goal,relevant,r2,0.6792319416999817,0.6792319416999817
+0,A_recon,h,linear,inactive_goal,goal-like irrelevant,r2,-0.31064367294311523,0.0
+0,A_recon,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,-0.011179447174072266,0.0
+0,A_recon,h,linear,ring_position,identity,r2,-0.3273959159851074,0.0
+0,A_recon,h,linear,plus_position,identity,r2,-0.1155252456665039,0.0
+0,A_recon,h,linear,distractor_positions,irrelevant,r2,-0.46682465076446533,0.0
+0,A_recon,h,linear,distractor_hues,irrelevant,r2,-0.4612102508544922,0.0
+0,A_recon,h,linear,background_sat_val,irrelevant,r2,0.10593068599700928,0.10593068599700928
+0,A_recon,h,linear,background_hue_within_band,irrelevant,r2,-7142.56494140625,0.0
+0,A_recon,h,linear,selector_bit,relevant,balanced_acc,0.9799176356589148,0.9799176356589148
+0,A_recon,h,mlp,agent_position,relevant,r2,0.4361562132835388,0.4361562132835388
+0,A_recon,h,mlp,agent_velocity,relevant,r2,0.5914958715438843,0.5914958715438843
+0,A_recon,h,mlp,active_goal,relevant,r2,0.3402901291847229,0.3402901291847229
+0,A_recon,h,mlp,agent_to_active_goal,relevant,r2,0.6520583629608154,0.6520583629608154
+0,A_recon,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.5916407108306885,0.0
+0,A_recon,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.17241907119750977,0.0
+0,A_recon,h,mlp,ring_position,identity,r2,-0.44996654987335205,0.0
+0,A_recon,h,mlp,plus_position,identity,r2,-0.11776566505432129,0.0
+0,A_recon,h,mlp,distractor_positions,irrelevant,r2,-1.049543857574463,0.0
+0,A_recon,h,mlp,distractor_hues,irrelevant,r2,-0.9944409132003784,0.0
+0,A_recon,h,mlp,background_sat_val,irrelevant,r2,-0.20551836490631104,0.0
+0,A_recon,h,mlp,background_hue_within_band,irrelevant,r2,0.026291310787200928,0.026291310787200928
+0,A_recon,h,mlp,selector_bit,relevant,balanced_acc,0.9784762596899225,0.9784762596899225
+0,B_task,z,linear,agent_position,relevant,r2,0.8478979468345642,0.8478979468345642
+0,B_task,z,linear,agent_velocity,relevant,r2,-0.013806343078613281,0.0
+0,B_task,z,linear,active_goal,relevant,r2,0.8922189474105835,0.8922189474105835
+0,B_task,z,linear,agent_to_active_goal,relevant,r2,0.8472575545310974,0.8472575545310974
+0,B_task,z,linear,inactive_goal,goal-like irrelevant,r2,0.11102986335754395,0.11102986335754395
+0,B_task,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.4899960160255432,0.4899960160255432
+0,B_task,z,linear,ring_position,identity,r2,-0.01122283935546875,0.0
+0,B_task,z,linear,plus_position,identity,r2,0.014015138149261475,0.014015138149261475
+0,B_task,z,linear,distractor_positions,irrelevant,r2,-0.06724774837493896,0.0
+0,B_task,z,linear,distractor_hues,irrelevant,r2,-0.14476120471954346,0.0
+0,B_task,z,linear,background_sat_val,irrelevant,r2,-0.17223000526428223,0.0
+0,B_task,z,linear,background_hue_within_band,irrelevant,r2,-5075.03515625,0.0
+0,B_task,z,linear,selector_bit,relevant,balanced_acc,0.8029009205426356,0.8029009205426356
+0,B_task,z,mlp,agent_position,relevant,r2,0.8958848714828491,0.8958848714828491
+0,B_task,z,mlp,agent_velocity,relevant,r2,-0.23624515533447266,0.0
+0,B_task,z,mlp,active_goal,relevant,r2,0.9549914002418518,0.9549914002418518
+0,B_task,z,mlp,agent_to_active_goal,relevant,r2,0.9277018904685974,0.9277018904685974
+0,B_task,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.06079566478729248,0.0
+0,B_task,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.41664648056030273,0.41664648056030273
+0,B_task,z,mlp,ring_position,identity,r2,-0.005980372428894043,0.0
+0,B_task,z,mlp,plus_position,identity,r2,0.21488726139068604,0.21488726139068604
+0,B_task,z,mlp,distractor_positions,irrelevant,r2,-0.4524906873703003,0.0
+0,B_task,z,mlp,distractor_hues,irrelevant,r2,-0.5569931268692017,0.0
+0,B_task,z,mlp,background_sat_val,irrelevant,r2,-0.49963927268981934,0.0
+0,B_task,z,mlp,background_hue_within_band,irrelevant,r2,-0.5635451078414917,0.0
+0,B_task,z,mlp,selector_bit,relevant,balanced_acc,0.8678173449612403,0.8678173449612403
+0,B_task,h,linear,agent_position,relevant,r2,0.9263550639152527,0.9263550639152527
+0,B_task,h,linear,agent_velocity,relevant,r2,0.7799422740936279,0.7799422740936279
+0,B_task,h,linear,active_goal,relevant,r2,0.9359011650085449,0.9359011650085449
+0,B_task,h,linear,agent_to_active_goal,relevant,r2,0.9404264092445374,0.9404264092445374
+0,B_task,h,linear,inactive_goal,goal-like irrelevant,r2,-0.17058324813842773,0.0
+0,B_task,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.3652324080467224,0.3652324080467224
+0,B_task,h,linear,ring_position,identity,r2,-0.33206069469451904,0.0
+0,B_task,h,linear,plus_position,identity,r2,-0.3706005811691284,0.0
+0,B_task,h,linear,distractor_positions,irrelevant,r2,-0.4398752450942993,0.0
+0,B_task,h,linear,distractor_hues,irrelevant,r2,-0.5148396492004395,0.0
+0,B_task,h,linear,background_sat_val,irrelevant,r2,-0.4587986469268799,0.0
+0,B_task,h,linear,background_hue_within_band,irrelevant,r2,-6998.00341796875,0.0
+0,B_task,h,linear,selector_bit,relevant,balanced_acc,0.678718507751938,0.678718507751938
+0,B_task,h,mlp,agent_position,relevant,r2,0.9350606203079224,0.9350606203079224
+0,B_task,h,mlp,agent_velocity,relevant,r2,0.7441132068634033,0.7441132068634033
+0,B_task,h,mlp,active_goal,relevant,r2,0.9419800043106079,0.9419800043106079
+0,B_task,h,mlp,agent_to_active_goal,relevant,r2,0.9511541128158569,0.9511541128158569
+0,B_task,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.3946700096130371,0.0
+0,B_task,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.27892380952835083,0.27892380952835083
+0,B_task,h,mlp,ring_position,identity,r2,-0.36488449573516846,0.0
+0,B_task,h,mlp,plus_position,identity,r2,-0.3262789249420166,0.0
+0,B_task,h,mlp,distractor_positions,irrelevant,r2,-1.1434462070465088,0.0
+0,B_task,h,mlp,distractor_hues,irrelevant,r2,-0.947904109954834,0.0
+0,B_task,h,mlp,background_sat_val,irrelevant,r2,-1.0206081867218018,0.0
+0,B_task,h,mlp,background_hue_within_band,irrelevant,r2,-0.8709503412246704,0.0
+0,B_task,h,mlp,selector_bit,relevant,balanced_acc,0.6880390019379845,0.6880390019379845
+0,C_scene,z,linear,agent_position,relevant,r2,0.7338737845420837,0.7338737845420837
+0,C_scene,z,linear,agent_velocity,relevant,r2,-0.030105948448181152,0.0
+0,C_scene,z,linear,active_goal,relevant,r2,0.8240852355957031,0.8240852355957031
+0,C_scene,z,linear,agent_to_active_goal,relevant,r2,0.8026078939437866,0.8026078939437866
+0,C_scene,z,linear,inactive_goal,goal-like irrelevant,r2,0.04575091600418091,0.04575091600418091
+0,C_scene,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.3213356137275696,0.3213356137275696
+0,C_scene,z,linear,ring_position,identity,r2,-0.0362248420715332,0.0
+0,C_scene,z,linear,plus_position,identity,r2,0.031683146953582764,0.031683146953582764
+0,C_scene,z,linear,distractor_positions,irrelevant,r2,0.35261744260787964,0.35261744260787964
+0,C_scene,z,linear,distractor_hues,irrelevant,r2,0.33765411376953125,0.33765411376953125
+0,C_scene,z,linear,background_sat_val,irrelevant,r2,0.7266429662704468,0.7266429662704468
+0,C_scene,z,linear,background_hue_within_band,irrelevant,r2,-5019.8408203125,0.0
+0,C_scene,z,linear,selector_bit,relevant,balanced_acc,0.7296451065891473,0.7296451065891473
+0,C_scene,z,mlp,agent_position,relevant,r2,0.7591575384140015,0.7591575384140015
+0,C_scene,z,mlp,agent_velocity,relevant,r2,-0.40259480476379395,0.0
+0,C_scene,z,mlp,active_goal,relevant,r2,0.8540489077568054,0.8540489077568054
+0,C_scene,z,mlp,agent_to_active_goal,relevant,r2,0.8290756940841675,0.8290756940841675
+0,C_scene,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.24964940547943115,0.0
+0,C_scene,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.21434354782104492,0.21434354782104492
+0,C_scene,z,mlp,ring_position,identity,r2,-0.3344827890396118,0.0
+0,C_scene,z,mlp,plus_position,identity,r2,-0.232354998588562,0.0
+0,C_scene,z,mlp,distractor_positions,irrelevant,r2,0.11518824100494385,0.11518824100494385
+0,C_scene,z,mlp,distractor_hues,irrelevant,r2,0.08042728900909424,0.08042728900909424
+0,C_scene,z,mlp,background_sat_val,irrelevant,r2,0.6271865367889404,0.6271865367889404
+0,C_scene,z,mlp,background_hue_within_band,irrelevant,r2,-0.6616561412811279,0.0
+0,C_scene,z,mlp,selector_bit,relevant,balanced_acc,0.6775859980620155,0.6775859980620155
+0,C_scene,h,linear,agent_position,relevant,r2,0.8411737084388733,0.8411737084388733
+0,C_scene,h,linear,agent_velocity,relevant,r2,0.7569332122802734,0.7569332122802734
+0,C_scene,h,linear,active_goal,relevant,r2,0.8891041278839111,0.8891041278839111
+0,C_scene,h,linear,agent_to_active_goal,relevant,r2,0.9038270711898804,0.9038270711898804
+0,C_scene,h,linear,inactive_goal,goal-like irrelevant,r2,-0.21992206573486328,0.0
+0,C_scene,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.23310667276382446,0.23310667276382446
+0,C_scene,h,linear,ring_position,identity,r2,-0.44525325298309326,0.0
+0,C_scene,h,linear,plus_position,identity,r2,-0.3459070920944214,0.0
+0,C_scene,h,linear,distractor_positions,irrelevant,r2,-0.056703805923461914,0.0
+0,C_scene,h,linear,distractor_hues,irrelevant,r2,0.12403404712677002,0.12403404712677002
+0,C_scene,h,linear,background_sat_val,irrelevant,r2,0.23200571537017822,0.23200571537017822
+0,C_scene,h,linear,background_hue_within_band,irrelevant,r2,-6806.3984375,0.0
+0,C_scene,h,linear,selector_bit,relevant,balanced_acc,0.6374636627906977,0.6374636627906977
+0,C_scene,h,mlp,agent_position,relevant,r2,0.8631497621536255,0.8631497621536255
+0,C_scene,h,mlp,agent_velocity,relevant,r2,0.6908182501792908,0.6908182501792908
+0,C_scene,h,mlp,active_goal,relevant,r2,0.8842224478721619,0.8842224478721619
+0,C_scene,h,mlp,agent_to_active_goal,relevant,r2,0.914913535118103,0.914913535118103
+0,C_scene,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.3684753179550171,0.0
+0,C_scene,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.2209119200706482,0.2209119200706482
+0,C_scene,h,mlp,ring_position,identity,r2,-0.6845648288726807,0.0
+0,C_scene,h,mlp,plus_position,identity,r2,-0.5752735137939453,0.0
+0,C_scene,h,mlp,distractor_positions,irrelevant,r2,-0.47283709049224854,0.0
+0,C_scene,h,mlp,distractor_hues,irrelevant,r2,-0.1243131160736084,0.0
+0,C_scene,h,mlp,background_sat_val,irrelevant,r2,0.03855180740356445,0.03855180740356445
+0,C_scene,h,mlp,background_hue_within_band,irrelevant,r2,-0.827723503112793,0.0
+0,C_scene,h,mlp,selector_bit,relevant,balanced_acc,0.592108769379845,0.592108769379845
+0,D_latent,z,linear,agent_position,relevant,r2,0.738463282585144,0.738463282585144
+0,D_latent,z,linear,agent_velocity,relevant,r2,-0.02906322479248047,0.0
+0,D_latent,z,linear,active_goal,relevant,r2,0.875806450843811,0.875806450843811
+0,D_latent,z,linear,agent_to_active_goal,relevant,r2,0.7967941164970398,0.7967941164970398
+0,D_latent,z,linear,inactive_goal,goal-like irrelevant,r2,0.3499014377593994,0.3499014377593994
+0,D_latent,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.5078430771827698,0.5078430771827698
+0,D_latent,z,linear,ring_position,identity,r2,0.27032697200775146,0.27032697200775146
+0,D_latent,z,linear,plus_position,identity,r2,0.7271583080291748,0.7271583080291748
+0,D_latent,z,linear,distractor_positions,irrelevant,r2,-0.0719214677810669,0.0
+0,D_latent,z,linear,distractor_hues,irrelevant,r2,-0.1357051134109497,0.0
+0,D_latent,z,linear,background_sat_val,irrelevant,r2,0.07938265800476074,0.07938265800476074
+0,D_latent,z,linear,background_hue_within_band,irrelevant,r2,-7981.5009765625,0.0
+0,D_latent,z,linear,selector_bit,relevant,balanced_acc,1.0,1.0
+0,D_latent,z,mlp,agent_position,relevant,r2,0.7320000529289246,0.7320000529289246
+0,D_latent,z,mlp,agent_velocity,relevant,r2,-0.6467540264129639,0.0
+0,D_latent,z,mlp,active_goal,relevant,r2,0.8961592316627502,0.8961592316627502
+0,D_latent,z,mlp,agent_to_active_goal,relevant,r2,0.8333581686019897,0.8333581686019897
+0,D_latent,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.009515643119812012,0.0
+0,D_latent,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.3468141555786133,0.3468141555786133
+0,D_latent,z,mlp,ring_position,identity,r2,-0.04328560829162598,0.0
+0,D_latent,z,mlp,plus_position,identity,r2,0.8119783997535706,0.8119783997535706
+0,D_latent,z,mlp,distractor_positions,irrelevant,r2,-0.6912914514541626,0.0
+0,D_latent,z,mlp,distractor_hues,irrelevant,r2,-0.7942289113998413,0.0
+0,D_latent,z,mlp,background_sat_val,irrelevant,r2,0.05040335655212402,0.05040335655212402
+0,D_latent,z,mlp,background_hue_within_band,irrelevant,r2,0.7227938175201416,0.7227938175201416
+0,D_latent,z,mlp,selector_bit,relevant,balanced_acc,1.0,1.0
+0,D_latent,h,linear,agent_position,relevant,r2,0.8689219951629639,0.8689219951629639
+0,D_latent,h,linear,agent_velocity,relevant,r2,0.7734477519989014,0.7734477519989014
+0,D_latent,h,linear,active_goal,relevant,r2,0.9185130596160889,0.9185130596160889
+0,D_latent,h,linear,agent_to_active_goal,relevant,r2,0.9046255350112915,0.9046255350112915
+0,D_latent,h,linear,inactive_goal,goal-like irrelevant,r2,0.22430479526519775,0.22430479526519775
+0,D_latent,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.5142350196838379,0.5142350196838379
+0,D_latent,h,linear,ring_position,identity,r2,0.14265704154968262,0.14265704154968262
+0,D_latent,h,linear,plus_position,identity,r2,0.7185804843902588,0.7185804843902588
+0,D_latent,h,linear,distractor_positions,irrelevant,r2,-0.43605220317840576,0.0
+0,D_latent,h,linear,distractor_hues,irrelevant,r2,-0.4960060119628906,0.0
+0,D_latent,h,linear,background_sat_val,irrelevant,r2,-0.1601189374923706,0.0
+0,D_latent,h,linear,background_hue_within_band,irrelevant,r2,-9084.123046875,0.0
+0,D_latent,h,linear,selector_bit,relevant,balanced_acc,1.0,1.0
+0,D_latent,h,mlp,agent_position,relevant,r2,0.8721753358840942,0.8721753358840942
+0,D_latent,h,mlp,agent_velocity,relevant,r2,0.6709166169166565,0.6709166169166565
+0,D_latent,h,mlp,active_goal,relevant,r2,0.9194528460502625,0.9194528460502625
+0,D_latent,h,mlp,agent_to_active_goal,relevant,r2,0.9166312217712402,0.9166312217712402
+0,D_latent,h,mlp,inactive_goal,goal-like irrelevant,r2,0.10875427722930908,0.10875427722930908
+0,D_latent,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.46266722679138184,0.46266722679138184
+0,D_latent,h,mlp,ring_position,identity,r2,0.11240953207015991,0.11240953207015991
+0,D_latent,h,mlp,plus_position,identity,r2,0.7998281717300415,0.7998281717300415
+0,D_latent,h,mlp,distractor_positions,irrelevant,r2,-1.2313592433929443,0.0
+0,D_latent,h,mlp,distractor_hues,irrelevant,r2,-1.0100033283233643,0.0
+0,D_latent,h,mlp,background_sat_val,irrelevant,r2,-0.35650086402893066,0.0
+0,D_latent,h,mlp,background_hue_within_band,irrelevant,r2,0.6291167140007019,0.6291167140007019
+0,D_latent,h,mlp,selector_bit,relevant,balanced_acc,1.0,1.0
+1,init,z,linear,agent_position,relevant,r2,0.05863851308822632,0.05863851308822632
+1,init,z,linear,agent_velocity,relevant,r2,-0.025324463844299316,0.0
+1,init,z,linear,active_goal,relevant,r2,-0.08082520961761475,0.0
+1,init,z,linear,agent_to_active_goal,relevant,r2,0.048503339290618896,0.048503339290618896
+1,init,z,linear,inactive_goal,goal-like irrelevant,r2,-0.07672297954559326,0.0
+1,init,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.02586078643798828,0.02586078643798828
+1,init,z,linear,ring_position,identity,r2,-0.0800626277923584,0.0
+1,init,z,linear,plus_position,identity,r2,-0.06941103935241699,0.0
+1,init,z,linear,distractor_positions,irrelevant,r2,-0.05412483215332031,0.0
+1,init,z,linear,distractor_hues,irrelevant,r2,-0.08490133285522461,0.0
+1,init,z,linear,background_sat_val,irrelevant,r2,0.5776676535606384,0.5776676535606384
+1,init,z,linear,background_hue_within_band,irrelevant,r2,-6511.89453125,0.0
+1,init,z,linear,selector_bit,relevant,balanced_acc,0.9944404069767442,0.9944404069767442
+1,init,z,mlp,agent_position,relevant,r2,-0.09484696388244629,0.0
+1,init,z,mlp,agent_velocity,relevant,r2,-0.15190041065216064,0.0
+1,init,z,mlp,active_goal,relevant,r2,-0.4497889280319214,0.0
+1,init,z,mlp,agent_to_active_goal,relevant,r2,-0.1879671812057495,0.0
+1,init,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.3830885887145996,0.0
+1,init,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.15992987155914307,0.0
+1,init,z,mlp,ring_position,identity,r2,-0.48273515701293945,0.0
+1,init,z,mlp,plus_position,identity,r2,-0.41468000411987305,0.0
+1,init,z,mlp,distractor_positions,irrelevant,r2,-0.25482189655303955,0.0
+1,init,z,mlp,distractor_hues,irrelevant,r2,-0.372653603553772,0.0
+1,init,z,mlp,background_sat_val,irrelevant,r2,0.6591486930847168,0.6591486930847168
+1,init,z,mlp,background_hue_within_band,irrelevant,r2,0.7993433475494385,0.7993433475494385
+1,init,z,mlp,selector_bit,relevant,balanced_acc,0.9965055717054263,0.9965055717054263
+1,init,h,linear,agent_position,relevant,r2,0.3014017343521118,0.3014017343521118
+1,init,h,linear,agent_velocity,relevant,r2,0.756711483001709,0.756711483001709
+1,init,h,linear,active_goal,relevant,r2,-0.3334144353866577,0.0
+1,init,h,linear,agent_to_active_goal,relevant,r2,0.06482595205307007,0.06482595205307007
+1,init,h,linear,inactive_goal,goal-like irrelevant,r2,-0.2854112386703491,0.0
+1,init,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.07224386930465698,0.07224386930465698
+1,init,h,linear,ring_position,identity,r2,-0.3648179769515991,0.0
+1,init,h,linear,plus_position,identity,r2,-0.2217491865158081,0.0
+1,init,h,linear,distractor_positions,irrelevant,r2,-0.201682448387146,0.0
+1,init,h,linear,distractor_hues,irrelevant,r2,-0.3622676134109497,0.0
+1,init,h,linear,background_sat_val,irrelevant,r2,0.6208863258361816,0.6208863258361816
+1,init,h,linear,background_hue_within_band,irrelevant,r2,-7553.7626953125,0.0
+1,init,h,linear,selector_bit,relevant,balanced_acc,0.9916242732558139,0.9916242732558139
+1,init,h,mlp,agent_position,relevant,r2,-0.005769014358520508,0.0
+1,init,h,mlp,agent_velocity,relevant,r2,0.6649841070175171,0.6649841070175171
+1,init,h,mlp,active_goal,relevant,r2,-0.75937819480896,0.0
+1,init,h,mlp,agent_to_active_goal,relevant,r2,-0.3492894172668457,0.0
+1,init,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.9607675075531006,0.0
+1,init,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.19838249683380127,0.0
+1,init,h,mlp,ring_position,identity,r2,-0.9620143175125122,0.0
+1,init,h,mlp,plus_position,identity,r2,-0.8999990224838257,0.0
+1,init,h,mlp,distractor_positions,irrelevant,r2,-0.6975864171981812,0.0
+1,init,h,mlp,distractor_hues,irrelevant,r2,-0.8393576145172119,0.0
+1,init,h,mlp,background_sat_val,irrelevant,r2,0.5546301603317261,0.5546301603317261
+1,init,h,mlp,background_hue_within_band,irrelevant,r2,0.7203041315078735,0.7203041315078735
+1,init,h,mlp,selector_bit,relevant,balanced_acc,0.9971535852713178,0.9971535852713178
+1,A_recon,z,linear,agent_position,relevant,r2,0.5575408935546875,0.5575408935546875
+1,A_recon,z,linear,agent_velocity,relevant,r2,-0.03150308132171631,0.0
+1,A_recon,z,linear,active_goal,relevant,r2,0.7267410755157471,0.7267410755157471
+1,A_recon,z,linear,agent_to_active_goal,relevant,r2,0.7977246642112732,0.7977246642112732
+1,A_recon,z,linear,inactive_goal,goal-like irrelevant,r2,0.13127493858337402,0.13127493858337402
+1,A_recon,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.23857879638671875,0.23857879638671875
+1,A_recon,z,linear,ring_position,identity,r2,-0.09238040447235107,0.0
+1,A_recon,z,linear,plus_position,identity,r2,0.1964985728263855,0.1964985728263855
+1,A_recon,z,linear,distractor_positions,irrelevant,r2,-0.09064197540283203,0.0
+1,A_recon,z,linear,distractor_hues,irrelevant,r2,-0.18383479118347168,0.0
+1,A_recon,z,linear,background_sat_val,irrelevant,r2,0.4005556106567383,0.4005556106567383
+1,A_recon,z,linear,background_hue_within_band,irrelevant,r2,-6181.33251953125,0.0
+1,A_recon,z,linear,selector_bit,relevant,balanced_acc,0.9982558139534884,0.9982558139534884
+1,A_recon,z,mlp,agent_position,relevant,r2,0.5934780240058899,0.5934780240058899
+1,A_recon,z,mlp,agent_velocity,relevant,r2,-0.29509246349334717,0.0
+1,A_recon,z,mlp,active_goal,relevant,r2,0.8242161870002747,0.8242161870002747
+1,A_recon,z,mlp,agent_to_active_goal,relevant,r2,0.8118611574172974,0.8118611574172974
+1,A_recon,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.22678446769714355,0.0
+1,A_recon,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.10374194383621216,0.10374194383621216
+1,A_recon,z,mlp,ring_position,identity,r2,0.0830574631690979,0.0830574631690979
+1,A_recon,z,mlp,plus_position,identity,r2,0.3722630739212036,0.3722630739212036
+1,A_recon,z,mlp,distractor_positions,irrelevant,r2,-0.4912024736404419,0.0
+1,A_recon,z,mlp,distractor_hues,irrelevant,r2,-0.5880334377288818,0.0
+1,A_recon,z,mlp,background_sat_val,irrelevant,r2,0.592332661151886,0.592332661151886
+1,A_recon,z,mlp,background_hue_within_band,irrelevant,r2,0.7047049403190613,0.7047049403190613
+1,A_recon,z,mlp,selector_bit,relevant,balanced_acc,0.9986434108527131,0.9986434108527131
+1,A_recon,h,linear,agent_position,relevant,r2,0.5565887689590454,0.5565887689590454
+1,A_recon,h,linear,agent_velocity,relevant,r2,0.7541427612304688,0.7541427612304688
+1,A_recon,h,linear,active_goal,relevant,r2,0.6941938400268555,0.6941938400268555
+1,A_recon,h,linear,agent_to_active_goal,relevant,r2,0.8787884712219238,0.8787884712219238
+1,A_recon,h,linear,inactive_goal,goal-like irrelevant,r2,-0.15239083766937256,0.0
+1,A_recon,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.07857412099838257,0.07857412099838257
+1,A_recon,h,linear,ring_position,identity,r2,-0.3884613513946533,0.0
+1,A_recon,h,linear,plus_position,identity,r2,-0.12550866603851318,0.0
+1,A_recon,h,linear,distractor_positions,irrelevant,r2,-0.38649189472198486,0.0
+1,A_recon,h,linear,distractor_hues,irrelevant,r2,-0.39248692989349365,0.0
+1,A_recon,h,linear,background_sat_val,irrelevant,r2,0.05671834945678711,0.05671834945678711
+1,A_recon,h,linear,background_hue_within_band,irrelevant,r2,-6974.93896484375,0.0
+1,A_recon,h,linear,selector_bit,relevant,balanced_acc,0.9304081879844961,0.9304081879844961
+1,A_recon,h,mlp,agent_position,relevant,r2,0.5823968648910522,0.5823968648910522
+1,A_recon,h,mlp,agent_velocity,relevant,r2,0.6974793672561646,0.6974793672561646
+1,A_recon,h,mlp,active_goal,relevant,r2,0.6695649027824402,0.6695649027824402
+1,A_recon,h,mlp,agent_to_active_goal,relevant,r2,0.8885055184364319,0.8885055184364319
+1,A_recon,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.4153093099594116,0.0
+1,A_recon,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.0004367828369140625,0.0004367828369140625
+1,A_recon,h,mlp,ring_position,identity,r2,-0.301113486289978,0.0
+1,A_recon,h,mlp,plus_position,identity,r2,0.02512359619140625,0.02512359619140625
+1,A_recon,h,mlp,distractor_positions,irrelevant,r2,-0.9464763402938843,0.0
+1,A_recon,h,mlp,distractor_hues,irrelevant,r2,-0.8305919170379639,0.0
+1,A_recon,h,mlp,background_sat_val,irrelevant,r2,-0.32065415382385254,0.0
+1,A_recon,h,mlp,background_hue_within_band,irrelevant,r2,-0.679416298866272,0.0
+1,A_recon,h,mlp,selector_bit,relevant,balanced_acc,0.9484435562015504,0.9484435562015504
+1,B_task,z,linear,agent_position,relevant,r2,0.8134307265281677,0.8134307265281677
+1,B_task,z,linear,agent_velocity,relevant,r2,-0.024479150772094727,0.0
+1,B_task,z,linear,active_goal,relevant,r2,0.8595313429832458,0.8595313429832458
+1,B_task,z,linear,agent_to_active_goal,relevant,r2,0.8152880668640137,0.8152880668640137
+1,B_task,z,linear,inactive_goal,goal-like irrelevant,r2,0.1770014762878418,0.1770014762878418
+1,B_task,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.4852134585380554,0.4852134585380554
+1,B_task,z,linear,ring_position,identity,r2,0.17061293125152588,0.17061293125152588
+1,B_task,z,linear,plus_position,identity,r2,0.2928740978240967,0.2928740978240967
+1,B_task,z,linear,distractor_positions,irrelevant,r2,-0.0760570764541626,0.0
+1,B_task,z,linear,distractor_hues,irrelevant,r2,-0.09256482124328613,0.0
+1,B_task,z,linear,background_sat_val,irrelevant,r2,-0.05585956573486328,0.0
+1,B_task,z,linear,background_hue_within_band,irrelevant,r2,-4940.9443359375,0.0
+1,B_task,z,linear,selector_bit,relevant,balanced_acc,0.9404433139534883,0.9404433139534883
+1,B_task,z,mlp,agent_position,relevant,r2,0.8589692711830139,0.8589692711830139
+1,B_task,z,mlp,agent_velocity,relevant,r2,-0.2484513521194458,0.0
+1,B_task,z,mlp,active_goal,relevant,r2,0.9200961589813232,0.9200961589813232
+1,B_task,z,mlp,agent_to_active_goal,relevant,r2,0.8934362530708313,0.8934362530708313
+1,B_task,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.0009751319885253906,0.0
+1,B_task,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.4004802703857422,0.4004802703857422
+1,B_task,z,mlp,ring_position,identity,r2,0.1895148754119873,0.1895148754119873
+1,B_task,z,mlp,plus_position,identity,r2,0.5517783164978027,0.5517783164978027
+1,B_task,z,mlp,distractor_positions,irrelevant,r2,-0.4250316619873047,0.0
+1,B_task,z,mlp,distractor_hues,irrelevant,r2,-0.5558319091796875,0.0
+1,B_task,z,mlp,background_sat_val,irrelevant,r2,-0.41890668869018555,0.0
+1,B_task,z,mlp,background_hue_within_band,irrelevant,r2,-0.5128816366195679,0.0
+1,B_task,z,mlp,selector_bit,relevant,balanced_acc,0.9647044573643411,0.9647044573643411
+1,B_task,h,linear,agent_position,relevant,r2,0.8962714076042175,0.8962714076042175
+1,B_task,h,linear,agent_velocity,relevant,r2,0.7571223974227905,0.7571223974227905
+1,B_task,h,linear,active_goal,relevant,r2,0.9140378832817078,0.9140378832817078
+1,B_task,h,linear,agent_to_active_goal,relevant,r2,0.9151154160499573,0.9151154160499573
+1,B_task,h,linear,inactive_goal,goal-like irrelevant,r2,-0.05774497985839844,0.0
+1,B_task,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.39207565784454346,0.39207565784454346
+1,B_task,h,linear,ring_position,identity,r2,-0.18482792377471924,0.0
+1,B_task,h,linear,plus_position,identity,r2,0.04520118236541748,0.04520118236541748
+1,B_task,h,linear,distractor_positions,irrelevant,r2,-0.494418740272522,0.0
+1,B_task,h,linear,distractor_hues,irrelevant,r2,-0.4710726737976074,0.0
+1,B_task,h,linear,background_sat_val,irrelevant,r2,-0.4383960962295532,0.0
+1,B_task,h,linear,background_hue_within_band,irrelevant,r2,-6761.5986328125,0.0
+1,B_task,h,linear,selector_bit,relevant,balanced_acc,0.8266533430232559,0.8266533430232559
+1,B_task,h,mlp,agent_position,relevant,r2,0.9031776189804077,0.9031776189804077
+1,B_task,h,mlp,agent_velocity,relevant,r2,0.6850573420524597,0.6850573420524597
+1,B_task,h,mlp,active_goal,relevant,r2,0.9166349172592163,0.9166349172592163
+1,B_task,h,mlp,agent_to_active_goal,relevant,r2,0.9219092130661011,0.9219092130661011
+1,B_task,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.2654457092285156,0.0
+1,B_task,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.3288053274154663,0.3288053274154663
+1,B_task,h,mlp,ring_position,identity,r2,-0.14627397060394287,0.0
+1,B_task,h,mlp,plus_position,identity,r2,0.09700381755828857,0.09700381755828857
+1,B_task,h,mlp,distractor_positions,irrelevant,r2,-1.1343679428100586,0.0
+1,B_task,h,mlp,distractor_hues,irrelevant,r2,-0.9494626522064209,0.0
+1,B_task,h,mlp,background_sat_val,irrelevant,r2,-0.6920641660690308,0.0
+1,B_task,h,mlp,background_hue_within_band,irrelevant,r2,-0.8709197044372559,0.0
+1,B_task,h,mlp,selector_bit,relevant,balanced_acc,0.8424600290697675,0.8424600290697675
+1,C_scene,z,linear,agent_position,relevant,r2,0.842936635017395,0.842936635017395
+1,C_scene,z,linear,agent_velocity,relevant,r2,-0.05105125904083252,0.0
+1,C_scene,z,linear,active_goal,relevant,r2,0.8667392730712891,0.8667392730712891
+1,C_scene,z,linear,agent_to_active_goal,relevant,r2,0.8277211785316467,0.8277211785316467
+1,C_scene,z,linear,inactive_goal,goal-like irrelevant,r2,0.0953972339630127,0.0953972339630127
+1,C_scene,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.46596163511276245,0.46596163511276245
+1,C_scene,z,linear,ring_position,identity,r2,0.017424941062927246,0.017424941062927246
+1,C_scene,z,linear,plus_position,identity,r2,0.0329204797744751,0.0329204797744751
+1,C_scene,z,linear,distractor_positions,irrelevant,r2,0.029162168502807617,0.029162168502807617
+1,C_scene,z,linear,distractor_hues,irrelevant,r2,-0.030161619186401367,0.0
+1,C_scene,z,linear,background_sat_val,irrelevant,r2,0.2319127321243286,0.2319127321243286
+1,C_scene,z,linear,background_hue_within_band,irrelevant,r2,-5191.60986328125,0.0
+1,C_scene,z,linear,selector_bit,relevant,balanced_acc,0.829312015503876,0.829312015503876
+1,C_scene,z,mlp,agent_position,relevant,r2,0.8823097348213196,0.8823097348213196
+1,C_scene,z,mlp,agent_velocity,relevant,r2,-0.4146963357925415,0.0
+1,C_scene,z,mlp,active_goal,relevant,r2,0.9164315462112427,0.9164315462112427
+1,C_scene,z,mlp,agent_to_active_goal,relevant,r2,0.9030904173851013,0.9030904173851013
+1,C_scene,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.15195226669311523,0.0
+1,C_scene,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.35236597061157227,0.35236597061157227
+1,C_scene,z,mlp,ring_position,identity,r2,0.03914809226989746,0.03914809226989746
+1,C_scene,z,mlp,plus_position,identity,r2,0.13227087259292603,0.13227087259292603
+1,C_scene,z,mlp,distractor_positions,irrelevant,r2,-0.3407273292541504,0.0
+1,C_scene,z,mlp,distractor_hues,irrelevant,r2,-0.5120532512664795,0.0
+1,C_scene,z,mlp,background_sat_val,irrelevant,r2,-0.10007083415985107,0.0
+1,C_scene,z,mlp,background_hue_within_band,irrelevant,r2,-0.7741453647613525,0.0
+1,C_scene,z,mlp,selector_bit,relevant,balanced_acc,0.8593871124031007,0.8593871124031007
+1,C_scene,h,linear,agent_position,relevant,r2,0.9138160347938538,0.9138160347938538
+1,C_scene,h,linear,agent_velocity,relevant,r2,0.7756664752960205,0.7756664752960205
+1,C_scene,h,linear,active_goal,relevant,r2,0.9096605777740479,0.9096605777740479
+1,C_scene,h,linear,agent_to_active_goal,relevant,r2,0.9176628589630127,0.9176628589630127
+1,C_scene,h,linear,inactive_goal,goal-like irrelevant,r2,-0.13347744941711426,0.0
+1,C_scene,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.3584427833557129,0.3584427833557129
+1,C_scene,h,linear,ring_position,identity,r2,-0.4015010595321655,0.0
+1,C_scene,h,linear,plus_position,identity,r2,-0.29335880279541016,0.0
+1,C_scene,h,linear,distractor_positions,irrelevant,r2,-0.38662850856781006,0.0
+1,C_scene,h,linear,distractor_hues,irrelevant,r2,-0.40455198287963867,0.0
+1,C_scene,h,linear,background_sat_val,irrelevant,r2,-0.192399263381958,0.0
+1,C_scene,h,linear,background_hue_within_band,irrelevant,r2,-7700.00390625,0.0
+1,C_scene,h,linear,selector_bit,relevant,balanced_acc,0.6924236918604652,0.6924236918604652
+1,C_scene,h,mlp,agent_position,relevant,r2,0.918550431728363,0.918550431728363
+1,C_scene,h,mlp,agent_velocity,relevant,r2,0.7227470874786377,0.7227470874786377
+1,C_scene,h,mlp,active_goal,relevant,r2,0.9226759672164917,0.9226759672164917
+1,C_scene,h,mlp,agent_to_active_goal,relevant,r2,0.938313364982605,0.938313364982605
+1,C_scene,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.420063853263855,0.0
+1,C_scene,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.24162960052490234,0.24162960052490234
+1,C_scene,h,mlp,ring_position,identity,r2,-0.42890191078186035,0.0
+1,C_scene,h,mlp,plus_position,identity,r2,-0.4855313301086426,0.0
+1,C_scene,h,mlp,distractor_positions,irrelevant,r2,-0.9687354564666748,0.0
+1,C_scene,h,mlp,distractor_hues,irrelevant,r2,-0.7763881683349609,0.0
+1,C_scene,h,mlp,background_sat_val,irrelevant,r2,-0.5840561389923096,0.0
+1,C_scene,h,mlp,background_hue_within_band,irrelevant,r2,-0.9902790784835815,0.0
+1,C_scene,h,mlp,selector_bit,relevant,balanced_acc,0.6657885174418605,0.6657885174418605
+1,D_latent,z,linear,agent_position,relevant,r2,0.7924048900604248,0.7924048900604248
+1,D_latent,z,linear,agent_velocity,relevant,r2,-0.029509425163269043,0.0
+1,D_latent,z,linear,active_goal,relevant,r2,0.894346296787262,0.894346296787262
+1,D_latent,z,linear,agent_to_active_goal,relevant,r2,0.8095086216926575,0.8095086216926575
+1,D_latent,z,linear,inactive_goal,goal-like irrelevant,r2,0.1663559079170227,0.1663559079170227
+1,D_latent,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.4484555721282959,0.4484555721282959
+1,D_latent,z,linear,ring_position,identity,r2,0.2884269952774048,0.2884269952774048
+1,D_latent,z,linear,plus_position,identity,r2,0.5954469442367554,0.5954469442367554
+1,D_latent,z,linear,distractor_positions,irrelevant,r2,-0.08715152740478516,0.0
+1,D_latent,z,linear,distractor_hues,irrelevant,r2,-0.15799319744110107,0.0
+1,D_latent,z,linear,background_sat_val,irrelevant,r2,0.08432173728942871,0.08432173728942871
+1,D_latent,z,linear,background_hue_within_band,irrelevant,r2,-6046.8271484375,0.0
+1,D_latent,z,linear,selector_bit,relevant,balanced_acc,1.0,1.0
+1,D_latent,z,mlp,agent_position,relevant,r2,0.804627537727356,0.804627537727356
+1,D_latent,z,mlp,agent_velocity,relevant,r2,-0.4203050136566162,0.0
+1,D_latent,z,mlp,active_goal,relevant,r2,0.9319496154785156,0.9319496154785156
+1,D_latent,z,mlp,agent_to_active_goal,relevant,r2,0.8684619069099426,0.8684619069099426
+1,D_latent,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.0838019847869873,0.0
+1,D_latent,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.3092692494392395,0.3092692494392395
+1,D_latent,z,mlp,ring_position,identity,r2,0.1597132682800293,0.1597132682800293
+1,D_latent,z,mlp,plus_position,identity,r2,0.6588954925537109,0.6588954925537109
+1,D_latent,z,mlp,distractor_positions,irrelevant,r2,-0.654365062713623,0.0
+1,D_latent,z,mlp,distractor_hues,irrelevant,r2,-0.7063628435134888,0.0
+1,D_latent,z,mlp,background_sat_val,irrelevant,r2,-0.14101362228393555,0.0
+1,D_latent,z,mlp,background_hue_within_band,irrelevant,r2,0.700098991394043,0.700098991394043
+1,D_latent,z,mlp,selector_bit,relevant,balanced_acc,1.0,1.0
+1,D_latent,h,linear,agent_position,relevant,r2,0.9148800373077393,0.9148800373077393
+1,D_latent,h,linear,agent_velocity,relevant,r2,0.7953577041625977,0.7953577041625977
+1,D_latent,h,linear,active_goal,relevant,r2,0.943507194519043,0.943507194519043
+1,D_latent,h,linear,agent_to_active_goal,relevant,r2,0.9346144795417786,0.9346144795417786
+1,D_latent,h,linear,inactive_goal,goal-like irrelevant,r2,-0.1010504961013794,0.0
+1,D_latent,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.3582286834716797,0.3582286834716797
+1,D_latent,h,linear,ring_position,identity,r2,0.19571006298065186,0.19571006298065186
+1,D_latent,h,linear,plus_position,identity,r2,0.49606502056121826,0.49606502056121826
+1,D_latent,h,linear,distractor_positions,irrelevant,r2,-0.45720577239990234,0.0
+1,D_latent,h,linear,distractor_hues,irrelevant,r2,-0.5930237770080566,0.0
+1,D_latent,h,linear,background_sat_val,irrelevant,r2,-0.07913291454315186,0.0
+1,D_latent,h,linear,background_hue_within_band,irrelevant,r2,-7882.95947265625,0.0
+1,D_latent,h,linear,selector_bit,relevant,balanced_acc,1.0,1.0
+1,D_latent,h,mlp,agent_position,relevant,r2,0.9016238451004028,0.9016238451004028
+1,D_latent,h,mlp,agent_velocity,relevant,r2,0.662419319152832,0.662419319152832
+1,D_latent,h,mlp,active_goal,relevant,r2,0.9420308470726013,0.9420308470726013
+1,D_latent,h,mlp,agent_to_active_goal,relevant,r2,0.9235051870346069,0.9235051870346069
+1,D_latent,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.14063572883605957,0.0
+1,D_latent,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.3565971851348877,0.3565971851348877
+1,D_latent,h,mlp,ring_position,identity,r2,0.10600852966308594,0.10600852966308594
+1,D_latent,h,mlp,plus_position,identity,r2,0.5827733278274536,0.5827733278274536
+1,D_latent,h,mlp,distractor_positions,irrelevant,r2,-1.1007187366485596,0.0
+1,D_latent,h,mlp,distractor_hues,irrelevant,r2,-0.9513378143310547,0.0
+1,D_latent,h,mlp,background_sat_val,irrelevant,r2,-0.2824462652206421,0.0
+1,D_latent,h,mlp,background_hue_within_band,irrelevant,r2,0.5394428372383118,0.5394428372383118
+1,D_latent,h,mlp,selector_bit,relevant,balanced_acc,0.9996124031007751,0.9996124031007751
+2,init,z,linear,agent_position,relevant,r2,0.060874998569488525,0.060874998569488525
+2,init,z,linear,agent_velocity,relevant,r2,-0.03408777713775635,0.0
+2,init,z,linear,active_goal,relevant,r2,-0.05066704750061035,0.0
+2,init,z,linear,agent_to_active_goal,relevant,r2,0.03386223316192627,0.03386223316192627
+2,init,z,linear,inactive_goal,goal-like irrelevant,r2,-0.13835859298706055,0.0
+2,init,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.02613908052444458,0.02613908052444458
+2,init,z,linear,ring_position,identity,r2,-0.11968719959259033,0.0
+2,init,z,linear,plus_position,identity,r2,-0.08813643455505371,0.0
+2,init,z,linear,distractor_positions,irrelevant,r2,-0.053134918212890625,0.0
+2,init,z,linear,distractor_hues,irrelevant,r2,-0.09186947345733643,0.0
+2,init,z,linear,background_sat_val,irrelevant,r2,0.5625929832458496,0.5625929832458496
+2,init,z,linear,background_hue_within_band,irrelevant,r2,-6405.67431640625,0.0
+2,init,z,linear,selector_bit,relevant,balanced_acc,0.9490915697674418,0.9490915697674418
+2,init,z,mlp,agent_position,relevant,r2,-0.16029393672943115,0.0
+2,init,z,mlp,agent_velocity,relevant,r2,-0.1725327968597412,0.0
+2,init,z,mlp,active_goal,relevant,r2,-0.394478440284729,0.0
+2,init,z,mlp,agent_to_active_goal,relevant,r2,-0.24683189392089844,0.0
+2,init,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.46899211406707764,0.0
+2,init,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.24818146228790283,0.0
+2,init,z,mlp,ring_position,identity,r2,-0.5019007921218872,0.0
+2,init,z,mlp,plus_position,identity,r2,-0.4148886203765869,0.0
+2,init,z,mlp,distractor_positions,irrelevant,r2,-0.31621110439300537,0.0
+2,init,z,mlp,distractor_hues,irrelevant,r2,-0.35478878021240234,0.0
+2,init,z,mlp,background_sat_val,irrelevant,r2,0.5731021165847778,0.5731021165847778
+2,init,z,mlp,background_hue_within_band,irrelevant,r2,0.45485514402389526,0.45485514402389526
+2,init,z,mlp,selector_bit,relevant,balanced_acc,0.9423146802325582,0.9423146802325582
+2,init,h,linear,agent_position,relevant,r2,0.2641562223434448,0.2641562223434448
+2,init,h,linear,agent_velocity,relevant,r2,0.7390576601028442,0.7390576601028442
+2,init,h,linear,active_goal,relevant,r2,-0.2457793951034546,0.0
+2,init,h,linear,agent_to_active_goal,relevant,r2,0.005351245403289795,0.005351245403289795
+2,init,h,linear,inactive_goal,goal-like irrelevant,r2,-0.39856958389282227,0.0
+2,init,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.06160670518875122,0.06160670518875122
+2,init,h,linear,ring_position,identity,r2,-0.31986498832702637,0.0
+2,init,h,linear,plus_position,identity,r2,-0.20805799961090088,0.0
+2,init,h,linear,distractor_positions,irrelevant,r2,-0.22138404846191406,0.0
+2,init,h,linear,distractor_hues,irrelevant,r2,-0.3061516284942627,0.0
+2,init,h,linear,background_sat_val,irrelevant,r2,0.5993759632110596,0.5993759632110596
+2,init,h,linear,background_hue_within_band,irrelevant,r2,-7751.74658203125,0.0
+2,init,h,linear,selector_bit,relevant,balanced_acc,0.9744186046511628,0.9744186046511628
+2,init,h,mlp,agent_position,relevant,r2,-0.08339333534240723,0.0
+2,init,h,mlp,agent_velocity,relevant,r2,0.6078612804412842,0.6078612804412842
+2,init,h,mlp,active_goal,relevant,r2,-0.5371521711349487,0.0
+2,init,h,mlp,agent_to_active_goal,relevant,r2,-0.3110283613204956,0.0
+2,init,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.8658063411712646,0.0
+2,init,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.29135119915008545,0.0
+2,init,h,mlp,ring_position,identity,r2,-0.9927026033401489,0.0
+2,init,h,mlp,plus_position,identity,r2,-0.6970951557159424,0.0
+2,init,h,mlp,distractor_positions,irrelevant,r2,-0.9455024003982544,0.0
+2,init,h,mlp,distractor_hues,irrelevant,r2,-0.7674685716629028,0.0
+2,init,h,mlp,background_sat_val,irrelevant,r2,0.4690701365470886,0.4690701365470886
+2,init,h,mlp,background_hue_within_band,irrelevant,r2,0.44677555561065674,0.44677555561065674
+2,init,h,mlp,selector_bit,relevant,balanced_acc,0.9761627906976744,0.9761627906976744
+2,A_recon,z,linear,agent_position,relevant,r2,0.17166507244110107,0.17166507244110107
+2,A_recon,z,linear,agent_velocity,relevant,r2,-0.03215646743774414,0.0
+2,A_recon,z,linear,active_goal,relevant,r2,0.42226576805114746,0.42226576805114746
+2,A_recon,z,linear,agent_to_active_goal,relevant,r2,0.645897626876831,0.645897626876831
+2,A_recon,z,linear,inactive_goal,goal-like irrelevant,r2,0.0044234395027160645,0.0044234395027160645
+2,A_recon,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,-0.01907169818878174,0.0
+2,A_recon,z,linear,ring_position,identity,r2,-0.02226555347442627,0.0
+2,A_recon,z,linear,plus_position,identity,r2,0.10489034652709961,0.10489034652709961
+2,A_recon,z,linear,distractor_positions,irrelevant,r2,-0.09445369243621826,0.0
+2,A_recon,z,linear,distractor_hues,irrelevant,r2,-0.16347169876098633,0.0
+2,A_recon,z,linear,background_sat_val,irrelevant,r2,0.44343477487564087,0.44343477487564087
+2,A_recon,z,linear,background_hue_within_band,irrelevant,r2,-7289.9638671875,0.0
+2,A_recon,z,linear,selector_bit,relevant,balanced_acc,1.0,1.0
+2,A_recon,z,mlp,agent_position,relevant,r2,0.2063307762145996,0.2063307762145996
+2,A_recon,z,mlp,agent_velocity,relevant,r2,-0.27223145961761475,0.0
+2,A_recon,z,mlp,active_goal,relevant,r2,0.4701426029205322,0.4701426029205322
+2,A_recon,z,mlp,agent_to_active_goal,relevant,r2,0.5957322120666504,0.5957322120666504
+2,A_recon,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.45282483100891113,0.0
+2,A_recon,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.1787097454071045,0.0
+2,A_recon,z,mlp,ring_position,identity,r2,-0.25722038745880127,0.0
+2,A_recon,z,mlp,plus_position,identity,r2,0.05734902620315552,0.05734902620315552
+2,A_recon,z,mlp,distractor_positions,irrelevant,r2,-0.42202770709991455,0.0
+2,A_recon,z,mlp,distractor_hues,irrelevant,r2,-0.5620125532150269,0.0
+2,A_recon,z,mlp,background_sat_val,irrelevant,r2,0.5940006375312805,0.5940006375312805
+2,A_recon,z,mlp,background_hue_within_band,irrelevant,r2,0.833886444568634,0.833886444568634
+2,A_recon,z,mlp,selector_bit,relevant,balanced_acc,1.0,1.0
+2,A_recon,h,linear,agent_position,relevant,r2,0.22088372707366943,0.22088372707366943
+2,A_recon,h,linear,agent_velocity,relevant,r2,0.6991865038871765,0.6991865038871765
+2,A_recon,h,linear,active_goal,relevant,r2,0.40068620443344116,0.40068620443344116
+2,A_recon,h,linear,agent_to_active_goal,relevant,r2,0.6772860288619995,0.6772860288619995
+2,A_recon,h,linear,inactive_goal,goal-like irrelevant,r2,-0.2172485589981079,0.0
+2,A_recon,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,-0.10532712936401367,0.0
+2,A_recon,h,linear,ring_position,identity,r2,-0.27822422981262207,0.0
+2,A_recon,h,linear,plus_position,identity,r2,-0.19113624095916748,0.0
+2,A_recon,h,linear,distractor_positions,irrelevant,r2,-0.340756893157959,0.0
+2,A_recon,h,linear,distractor_hues,irrelevant,r2,-0.4099842309951782,0.0
+2,A_recon,h,linear,background_sat_val,irrelevant,r2,0.06089526414871216,0.06089526414871216
+2,A_recon,h,linear,background_hue_within_band,irrelevant,r2,-7004.87353515625,0.0
+2,A_recon,h,linear,selector_bit,relevant,balanced_acc,0.9740431201550388,0.9740431201550388
+2,A_recon,h,mlp,agent_position,relevant,r2,0.09403425455093384,0.09403425455093384
+2,A_recon,h,mlp,agent_velocity,relevant,r2,0.6503883600234985,0.6503883600234985
+2,A_recon,h,mlp,active_goal,relevant,r2,0.30841535329818726,0.30841535329818726
+2,A_recon,h,mlp,agent_to_active_goal,relevant,r2,0.6576199531555176,0.6576199531555176
+2,A_recon,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.5414403676986694,0.0
+2,A_recon,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,-0.3246912956237793,0.0
+2,A_recon,h,mlp,ring_position,identity,r2,-0.30728936195373535,0.0
+2,A_recon,h,mlp,plus_position,identity,r2,-0.18073558807373047,0.0
+2,A_recon,h,mlp,distractor_positions,irrelevant,r2,-0.9273064136505127,0.0
+2,A_recon,h,mlp,distractor_hues,irrelevant,r2,-0.8806784152984619,0.0
+2,A_recon,h,mlp,background_sat_val,irrelevant,r2,-0.08434545993804932,0.0
+2,A_recon,h,mlp,background_hue_within_band,irrelevant,r2,-0.13683080673217773,0.0
+2,A_recon,h,mlp,selector_bit,relevant,balanced_acc,0.9720385174418604,0.9720385174418604
+2,B_task,z,linear,agent_position,relevant,r2,0.7657901048660278,0.7657901048660278
+2,B_task,z,linear,agent_velocity,relevant,r2,-0.04190516471862793,0.0
+2,B_task,z,linear,active_goal,relevant,r2,0.8142092227935791,0.8142092227935791
+2,B_task,z,linear,agent_to_active_goal,relevant,r2,0.8289217352867126,0.8289217352867126
+2,B_task,z,linear,inactive_goal,goal-like irrelevant,r2,0.1393895149230957,0.1393895149230957
+2,B_task,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.4276169538497925,0.4276169538497925
+2,B_task,z,linear,ring_position,identity,r2,0.2094084620475769,0.2094084620475769
+2,B_task,z,linear,plus_position,identity,r2,0.48393410444259644,0.48393410444259644
+2,B_task,z,linear,distractor_positions,irrelevant,r2,-0.07389426231384277,0.0
+2,B_task,z,linear,distractor_hues,irrelevant,r2,-0.09635460376739502,0.0
+2,B_task,z,linear,background_sat_val,irrelevant,r2,-0.09182143211364746,0.0
+2,B_task,z,linear,background_hue_within_band,irrelevant,r2,-5146.36328125,0.0
+2,B_task,z,linear,selector_bit,relevant,balanced_acc,0.9988372093023256,0.9988372093023256
+2,B_task,z,mlp,agent_position,relevant,r2,0.8219373226165771,0.8219373226165771
+2,B_task,z,mlp,agent_velocity,relevant,r2,-0.3627772331237793,0.0
+2,B_task,z,mlp,active_goal,relevant,r2,0.8783813714981079,0.8783813714981079
+2,B_task,z,mlp,agent_to_active_goal,relevant,r2,0.8733470439910889,0.8733470439910889
+2,B_task,z,mlp,inactive_goal,goal-like irrelevant,r2,0.014545023441314697,0.014545023441314697
+2,B_task,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.3891479969024658,0.3891479969024658
+2,B_task,z,mlp,ring_position,identity,r2,0.2659526467323303,0.2659526467323303
+2,B_task,z,mlp,plus_position,identity,r2,0.6055424213409424,0.6055424213409424
+2,B_task,z,mlp,distractor_positions,irrelevant,r2,-0.5143182277679443,0.0
+2,B_task,z,mlp,distractor_hues,irrelevant,r2,-0.5661362409591675,0.0
+2,B_task,z,mlp,background_sat_val,irrelevant,r2,-0.38632774353027344,0.0
+2,B_task,z,mlp,background_hue_within_band,irrelevant,r2,-0.5154433250427246,0.0
+2,B_task,z,mlp,selector_bit,relevant,balanced_acc,0.999031007751938,0.999031007751938
+2,B_task,h,linear,agent_position,relevant,r2,0.8336166143417358,0.8336166143417358
+2,B_task,h,linear,agent_velocity,relevant,r2,0.7445234060287476,0.7445234060287476
+2,B_task,h,linear,active_goal,relevant,r2,0.8304288983345032,0.8304288983345032
+2,B_task,h,linear,agent_to_active_goal,relevant,r2,0.8932028412818909,0.8932028412818909
+2,B_task,h,linear,inactive_goal,goal-like irrelevant,r2,-0.16725075244903564,0.0
+2,B_task,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.29389894008636475,0.29389894008636475
+2,B_task,h,linear,ring_position,identity,r2,-0.03385007381439209,0.0
+2,B_task,h,linear,plus_position,identity,r2,0.24820274114608765,0.24820274114608765
+2,B_task,h,linear,distractor_positions,irrelevant,r2,-0.45997536182403564,0.0
+2,B_task,h,linear,distractor_hues,irrelevant,r2,-0.4450732469558716,0.0
+2,B_task,h,linear,background_sat_val,irrelevant,r2,-0.552330493927002,0.0
+2,B_task,h,linear,background_hue_within_band,irrelevant,r2,-6949.53515625,0.0
+2,B_task,h,linear,selector_bit,relevant,balanced_acc,0.9860101744186046,0.9860101744186046
+2,B_task,h,mlp,agent_position,relevant,r2,0.8474860787391663,0.8474860787391663
+2,B_task,h,mlp,agent_velocity,relevant,r2,0.6775628924369812,0.6775628924369812
+2,B_task,h,mlp,active_goal,relevant,r2,0.8607820272445679,0.8607820272445679
+2,B_task,h,mlp,agent_to_active_goal,relevant,r2,0.9070041179656982,0.9070041179656982
+2,B_task,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.3834648132324219,0.0
+2,B_task,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.20765334367752075,0.20765334367752075
+2,B_task,h,mlp,ring_position,identity,r2,-0.07783746719360352,0.0
+2,B_task,h,mlp,plus_position,identity,r2,0.22981888055801392,0.22981888055801392
+2,B_task,h,mlp,distractor_positions,irrelevant,r2,-1.079441785812378,0.0
+2,B_task,h,mlp,distractor_hues,irrelevant,r2,-1.005016565322876,0.0
+2,B_task,h,mlp,background_sat_val,irrelevant,r2,-0.981713056564331,0.0
+2,B_task,h,mlp,background_hue_within_band,irrelevant,r2,-1.0380330085754395,0.0
+2,B_task,h,mlp,selector_bit,relevant,balanced_acc,0.9863674903100775,0.9863674903100775
+2,C_scene,z,linear,agent_position,relevant,r2,0.8530132174491882,0.8530132174491882
+2,C_scene,z,linear,agent_velocity,relevant,r2,-0.03069758415222168,0.0
+2,C_scene,z,linear,active_goal,relevant,r2,0.8862554430961609,0.8862554430961609
+2,C_scene,z,linear,agent_to_active_goal,relevant,r2,0.8368700742721558,0.8368700742721558
+2,C_scene,z,linear,inactive_goal,goal-like irrelevant,r2,0.032698869705200195,0.032698869705200195
+2,C_scene,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.4577299952507019,0.4577299952507019
+2,C_scene,z,linear,ring_position,identity,r2,0.04192984104156494,0.04192984104156494
+2,C_scene,z,linear,plus_position,identity,r2,0.05936068296432495,0.05936068296432495
+2,C_scene,z,linear,distractor_positions,irrelevant,r2,0.037943899631500244,0.037943899631500244
+2,C_scene,z,linear,distractor_hues,irrelevant,r2,-0.0587010383605957,0.0
+2,C_scene,z,linear,background_sat_val,irrelevant,r2,0.436718225479126,0.436718225479126
+2,C_scene,z,linear,background_hue_within_band,irrelevant,r2,-5211.59521484375,0.0
+2,C_scene,z,linear,selector_bit,relevant,balanced_acc,0.8923328488372093,0.8923328488372093
+2,C_scene,z,mlp,agent_position,relevant,r2,0.8890817761421204,0.8890817761421204
+2,C_scene,z,mlp,agent_velocity,relevant,r2,-0.3507338762283325,0.0
+2,C_scene,z,mlp,active_goal,relevant,r2,0.9442475438117981,0.9442475438117981
+2,C_scene,z,mlp,agent_to_active_goal,relevant,r2,0.9144408106803894,0.9144408106803894
+2,C_scene,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.19957613945007324,0.0
+2,C_scene,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.3327367901802063,0.3327367901802063
+2,C_scene,z,mlp,ring_position,identity,r2,0.13437658548355103,0.13437658548355103
+2,C_scene,z,mlp,plus_position,identity,r2,0.2277836799621582,0.2277836799621582
+2,C_scene,z,mlp,distractor_positions,irrelevant,r2,-0.3358609676361084,0.0
+2,C_scene,z,mlp,distractor_hues,irrelevant,r2,-0.4829246997833252,0.0
+2,C_scene,z,mlp,background_sat_val,irrelevant,r2,0.25548243522644043,0.25548243522644043
+2,C_scene,z,mlp,background_hue_within_band,irrelevant,r2,-0.6044896841049194,0.0
+2,C_scene,z,mlp,selector_bit,relevant,balanced_acc,0.9297238372093023,0.9297238372093023
+2,C_scene,h,linear,agent_position,relevant,r2,0.9210842251777649,0.9210842251777649
+2,C_scene,h,linear,agent_velocity,relevant,r2,0.7601080536842346,0.7601080536842346
+2,C_scene,h,linear,active_goal,relevant,r2,0.932235836982727,0.932235836982727
+2,C_scene,h,linear,agent_to_active_goal,relevant,r2,0.9367794990539551,0.9367794990539551
+2,C_scene,h,linear,inactive_goal,goal-like irrelevant,r2,-0.19799768924713135,0.0
+2,C_scene,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.3871481418609619,0.3871481418609619
+2,C_scene,h,linear,ring_position,identity,r2,-0.2604799270629883,0.0
+2,C_scene,h,linear,plus_position,identity,r2,-0.47691142559051514,0.0
+2,C_scene,h,linear,distractor_positions,irrelevant,r2,-0.4027125835418701,0.0
+2,C_scene,h,linear,distractor_hues,irrelevant,r2,-0.3636699914932251,0.0
+2,C_scene,h,linear,background_sat_val,irrelevant,r2,-0.0965343713760376,0.0
+2,C_scene,h,linear,background_hue_within_band,irrelevant,r2,-7425.3642578125,0.0
+2,C_scene,h,linear,selector_bit,relevant,balanced_acc,0.740703730620155,0.740703730620155
+2,C_scene,h,mlp,agent_position,relevant,r2,0.9115912318229675,0.9115912318229675
+2,C_scene,h,mlp,agent_velocity,relevant,r2,0.6909418106079102,0.6909418106079102
+2,C_scene,h,mlp,active_goal,relevant,r2,0.9392240047454834,0.9392240047454834
+2,C_scene,h,mlp,agent_to_active_goal,relevant,r2,0.9377023577690125,0.9377023577690125
+2,C_scene,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.4722874164581299,0.0
+2,C_scene,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.2172127366065979,0.2172127366065979
+2,C_scene,h,mlp,ring_position,identity,r2,-0.31013381481170654,0.0
+2,C_scene,h,mlp,plus_position,identity,r2,-0.2950547933578491,0.0
+2,C_scene,h,mlp,distractor_positions,irrelevant,r2,-1.0630950927734375,0.0
+2,C_scene,h,mlp,distractor_hues,irrelevant,r2,-0.7900654077529907,0.0
+2,C_scene,h,mlp,background_sat_val,irrelevant,r2,-0.39302968978881836,0.0
+2,C_scene,h,mlp,background_hue_within_band,irrelevant,r2,-0.9517019987106323,0.0
+2,C_scene,h,mlp,selector_bit,relevant,balanced_acc,0.7626211240310077,0.7626211240310077
+2,D_latent,z,linear,agent_position,relevant,r2,0.7625433206558228,0.7625433206558228
+2,D_latent,z,linear,agent_velocity,relevant,r2,-0.04041743278503418,0.0
+2,D_latent,z,linear,active_goal,relevant,r2,0.8635907173156738,0.8635907173156738
+2,D_latent,z,linear,agent_to_active_goal,relevant,r2,0.7910192012786865,0.7910192012786865
+2,D_latent,z,linear,inactive_goal,goal-like irrelevant,r2,0.004965245723724365,0.004965245723724365
+2,D_latent,z,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.3679221272468567,0.3679221272468567
+2,D_latent,z,linear,ring_position,identity,r2,-0.13016319274902344,0.0
+2,D_latent,z,linear,plus_position,identity,r2,-0.012400388717651367,0.0
+2,D_latent,z,linear,distractor_positions,irrelevant,r2,-0.0707167387008667,0.0
+2,D_latent,z,linear,distractor_hues,irrelevant,r2,-0.14781725406646729,0.0
+2,D_latent,z,linear,background_sat_val,irrelevant,r2,0.07398968935012817,0.07398968935012817
+2,D_latent,z,linear,background_hue_within_band,irrelevant,r2,-6403.6162109375,0.0
+2,D_latent,z,linear,selector_bit,relevant,balanced_acc,0.9947674418604651,0.9947674418604651
+2,D_latent,z,mlp,agent_position,relevant,r2,0.7959896922111511,0.7959896922111511
+2,D_latent,z,mlp,agent_velocity,relevant,r2,-0.4173471927642822,0.0
+2,D_latent,z,mlp,active_goal,relevant,r2,0.9206178188323975,0.9206178188323975
+2,D_latent,z,mlp,agent_to_active_goal,relevant,r2,0.864284098148346,0.864284098148346
+2,D_latent,z,mlp,inactive_goal,goal-like irrelevant,r2,-0.29422831535339355,0.0
+2,D_latent,z,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.2134377360343933,0.2134377360343933
+2,D_latent,z,mlp,ring_position,identity,r2,0.1308038830757141,0.1308038830757141
+2,D_latent,z,mlp,plus_position,identity,r2,0.38574665784835815,0.38574665784835815
+2,D_latent,z,mlp,distractor_positions,irrelevant,r2,-0.576644778251648,0.0
+2,D_latent,z,mlp,distractor_hues,irrelevant,r2,-0.6289286613464355,0.0
+2,D_latent,z,mlp,background_sat_val,irrelevant,r2,0.019193410873413086,0.019193410873413086
+2,D_latent,z,mlp,background_hue_within_band,irrelevant,r2,0.5918574333190918,0.5918574333190918
+2,D_latent,z,mlp,selector_bit,relevant,balanced_acc,0.9917938468992249,0.9917938468992249
+2,D_latent,h,linear,agent_position,relevant,r2,0.9175940155982971,0.9175940155982971
+2,D_latent,h,linear,agent_velocity,relevant,r2,0.7995301485061646,0.7995301485061646
+2,D_latent,h,linear,active_goal,relevant,r2,0.9269331097602844,0.9269331097602844
+2,D_latent,h,linear,agent_to_active_goal,relevant,r2,0.9311035871505737,0.9311035871505737
+2,D_latent,h,linear,inactive_goal,goal-like irrelevant,r2,-0.1789090633392334,0.0
+2,D_latent,h,linear,agent_to_inactive_goal,goal-like irrelevant,r2,0.33705657720565796,0.33705657720565796
+2,D_latent,h,linear,ring_position,identity,r2,-0.25438928604125977,0.0
+2,D_latent,h,linear,plus_position,identity,r2,-0.16506099700927734,0.0
+2,D_latent,h,linear,distractor_positions,irrelevant,r2,-0.41931700706481934,0.0
+2,D_latent,h,linear,distractor_hues,irrelevant,r2,-0.46777963638305664,0.0
+2,D_latent,h,linear,background_sat_val,irrelevant,r2,-0.04351627826690674,0.0
+2,D_latent,h,linear,background_hue_within_band,irrelevant,r2,-7887.8720703125,0.0
+2,D_latent,h,linear,selector_bit,relevant,balanced_acc,0.9833333333333334,0.9833333333333334
+2,D_latent,h,mlp,agent_position,relevant,r2,0.908674955368042,0.908674955368042
+2,D_latent,h,mlp,agent_velocity,relevant,r2,0.6561543345451355,0.6561543345451355
+2,D_latent,h,mlp,active_goal,relevant,r2,0.9271948933601379,0.9271948933601379
+2,D_latent,h,mlp,agent_to_active_goal,relevant,r2,0.9191091060638428,0.9191091060638428
+2,D_latent,h,mlp,inactive_goal,goal-like irrelevant,r2,-0.43457257747650146,0.0
+2,D_latent,h,mlp,agent_to_inactive_goal,goal-like irrelevant,r2,0.2145785093307495,0.2145785093307495
+2,D_latent,h,mlp,ring_position,identity,r2,-0.07101702690124512,0.0
+2,D_latent,h,mlp,plus_position,identity,r2,0.2744290232658386,0.2744290232658386
+2,D_latent,h,mlp,distractor_positions,irrelevant,r2,-1.0341458320617676,0.0
+2,D_latent,h,mlp,distractor_hues,irrelevant,r2,-0.8703658580780029,0.0
+2,D_latent,h,mlp,background_sat_val,irrelevant,r2,-0.14920389652252197,0.0
+2,D_latent,h,mlp,background_hue_within_band,irrelevant,r2,0.32378220558166504,0.32378220558166504
+2,D_latent,h,mlp,selector_bit,relevant,balanced_acc,0.9683442344961241,0.9683442344961241
