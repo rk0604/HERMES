@@ -543,7 +543,7 @@ def run_steps(task):
 TIMING = {}
 for size in (['debug'] if PRESET == 'smoke' else TIMING_SIZES):
     for task, spec in TASKS.items():
-        logdir = ROOT / 'timing' / f'{task}_{size or "default"}'
+        logdir = ROOT / 'timing' / f'{task}_{size or "default"}'   # 'debug' in smoke mode, so sizes never mix
         if not (logdir / 'DONE.json').exists():
             flags = ['--jax.platform', PLATFORM, '--run.steps', str(TIMING_STEPS[task])]
             if PRESET != 'smoke':      # log often, and checkpoint to Drive at least once, to measure both
@@ -599,7 +599,9 @@ print('\nThese are extrapolations from a few hundred updates; compile time and D
 
 # %%
 def run_logdir(task, arm, seed):
-    return ROOT / 'runs' / task / arm / f'seed{seed}'
+    # The size block is part of the path ('debug' in smoke mode): a checkpoint can only
+    # resume a network of the same size, so different sizes must never share a logdir.
+    return ROOT / 'runs' / task / ('_'.join(size_blocks()) or 'default') / arm / f'seed{seed}'
 
 def run_flags(task, seed):
     return ['--jax.platform', PLATFORM, '--seed', str(seed), '--run.steps', str(run_steps(task)), *TIMER_FLAGS]
