@@ -38,6 +38,10 @@ experiments/*/results/ckpt/
 # datasets: hundreds of MB). Only their results/ subfolder is committed, copied out
 # next to the notebook that produced it.
 experiments/*/exp3-*-results-*/
+experiments/*/medium-*Z-*-001*/
+# Local staging folder where run outputs are gathered by hand for a write up. Every
+# file in it is already committed at its canonical path next to its notebook.
+experiments/*/allv3 data for publication/
 *.log
 
 .DS_Store
