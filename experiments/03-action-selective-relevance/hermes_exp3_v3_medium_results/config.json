@@ -1,0 +1,118 @@
+{
+  "img_size": 32,
+  "seq_len": 60,
+  "plan_T": 45,
+  "n_train": 6000,
+  "n_l1": 500,
+  "n_probe": 300,
+  "probe_stride": 2,
+  "probe_grid": 8,
+  "n_ceiling": 4000,
+  "ceiling_steps": 1500,
+  "recon_eval_n": 64,
+  "n_plan": 200,
+  "n_shift": 100,
+  "damping": 0.95,
+  "max_accel": 0.0025,
+  "v0_max": 0.025,
+  "goal_lo": 0.15,
+  "goal_hi": 0.85,
+  "goal_min_sep": 0.35,
+  "bonus": 0.5,
+  "bonus_sigma": 0.05,
+  "success_radius": 0.05,
+  "hue_band_ring": [
+    0.05,
+    0.45
+  ],
+  "hue_band_plus": [
+    0.55,
+    0.95
+  ],
+  "bg_sat": [
+    0.5,
+    0.9
+  ],
+  "bg_val": [
+    0.45,
+    0.8
+  ],
+  "pixel_noise": 0.05,
+  "n_distract": 2,
+  "d_speed": [
+    0.015,
+    0.045
+  ],
+  "d_hue_holdout": [
+    0.6,
+    0.72
+  ],
+  "blob_sigma": 2.2,
+  "ring_radius": 3.5,
+  "ring_width": 1.0,
+  "plus_arm": 4.0,
+  "plus_halfwidth": 0.9,
+  "p_park": 0.3,
+  "park_cem_samples": 200,
+  "park_cem_iters": 4,
+  "park_chunk": 600,
+  "park_action_noise": 0.05,
+  "p_ou": 0.3,
+  "ou_theta": 0.15,
+  "ou_sigma": 0.35,
+  "kp": 9.0,
+  "kd": 76.0,
+  "pd_noise": 0.3,
+  "wp_switch": [
+    10,
+    21
+  ],
+  "latent": 32,
+  "hidden": 192,
+  "ch": 24,
+  "reward_mlp": 128,
+  "epochs": 120,
+  "min_epochs": 60,
+  "learn_threshold": 0.5,
+  "patience_snaps": 4,
+  "min_delta": 0.005,
+  "converged_delta": 0.01,
+  "batch": 128,
+  "lr": 0.001,
+  "grad_clip": 5.0,
+  "horizon": 15,
+  "anchor_stride": 3,
+  "ema_tau": 0.99,
+  "w_recon": 1.0,
+  "w_scene": 1.0,
+  "w_latent": 1.0,
+  "amp": true,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "arms": [
+    "A_recon",
+    "B_task",
+    "C_scene",
+    "D_latent"
+  ],
+  "ablation_arms": [
+    "B_task",
+    "D_latent"
+  ],
+  "min_usable_seeds": 3,
+  "ckpt_every": 5,
+  "snap_every": 5,
+  "plan_h": 10,
+  "cem_samples": 500,
+  "cem_elites": 50,
+  "cem_iters": 6,
+  "cem_init_std": 0.7,
+  "cem_min_std": 0.05,
+  "plan_chunk": 100,
+  "run_shift": true
+}

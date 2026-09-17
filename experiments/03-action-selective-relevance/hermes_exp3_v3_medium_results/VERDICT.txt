@@ -1,0 +1,146 @@
+==============================================================================
+HERMES EXPERIMENT 3 (v3) VERDICT   scale=medium  seeds=5  frames=32px  planning episodes=200
+==============================================================================
+
+0. LEARNING GATE
+   A · reward + reconstruction            passed 3/5 seeds   converged 3/5   -> claims use seeds [1, 2, 4]
+   B · reward only                        passed 3/5 seeds   converged 3/5   -> claims use seeds [1, 2, 4]
+   C · reward + irrelevant-scene aux      passed 3/5 seeds   converged 1/5   -> claims use seeds [1, 2, 4]
+   D · reward + next-latent (EMA)         passed 4/5 seeds   converged 4/5   -> claims use seeds [0, 1, 2, 4]
+   B · reward only, no parking data       passed 5/5 seeds   converged 4/5
+   D · next-latent, no parking data       passed 5/5 seeds   converged 4/5
+   !! runs that did not converge (raise CFG.epochs before comparing them):
+      seed 0 A_recon: never learned within the ceiling (120 epochs)
+      seed 0 B_task: never learned within the ceiling (120 epochs)
+      seed 0 C_scene: never learned within the ceiling (120 epochs)
+      seed 1 C_scene: still improving at the ceiling (120 epochs)
+      seed 2 C_scene: never learned within the ceiling (120 epochs)
+      seed 3 A_recon: never learned within the ceiling (120 epochs)
+      seed 3 B_task: never learned within the ceiling (120 epochs)
+      seed 3 C_scene: never learned within the ceiling (120 epochs)
+      seed 3 D_latent: never learned within the ceiling (120 epochs)
+      seed 3 D_latent_nopark: still improving at the ceiling (110 epochs)
+      seed 4 B_task_nopark: still improving at the ceiling (100 epochs)
+
+1. SPEED - epochs needed to learn and then plateau (measured, not assumed)
+   A · reward + reconstruction            epochs   92.0   to R2 0.8   35.0   final R2 0.545   7.8 min
+   B · reward only                        epochs   96.0   to R2 0.8   35.0   final R2 0.254   4.5 min
+   C · reward + irrelevant-scene aux      epochs  120.0   to R2 0.8  never   final R2 0.273   5.7 min
+   D · reward + next-latent (EMA)         epochs   83.0   to R2 0.8   36.2   final R2 0.713   5.0 min
+
+2. LEVEL - planning return (real reward per step, mean +/- sd over seeds)
+   no-op (zero action)                    -0.457
+   random actions                         -0.470
+   oracle (true state, same planner)      +0.160
+   oracle, 1-step planning                -0.001
+   oracle, colour-blind                   -0.145
+   oracle, wrong goal                     -0.461
+   A · reward + reconstruction            -0.343 +/- 0.109   normalised 0.18   goal-choice 0.70   success 0.03   stops 10.6 px away   [gate failed in some seeds]
+   B · reward only                        -0.368 +/- 0.115   normalised 0.14   goal-choice 0.62   success 0.03   stops 11.8 px away   [gate failed in some seeds]
+   C · reward + irrelevant-scene aux      -0.388 +/- 0.089   normalised 0.11   goal-choice 0.62   success 0.01   stops 12.2 px away   [gate failed in some seeds]
+   D · reward + next-latent (EMA)         -0.279 +/- 0.109   normalised 0.29   goal-choice 0.82   success 0.05   stops 8.2 px away   [gate failed in some seeds]
+   return(A) - return(B): mean +0.0369 ; B worse in 2/3 seeds; seed-to-seed sd 0.0695
+      -> SMALLER than the seed spread -> treat as a tie
+   return(C) - return(B): mean -0.0335 ; B worse in 1/3 seeds; seed-to-seed sd 0.0998
+      -> SMALLER than the seed spread -> treat as a tie
+   return(D) - return(B): mean +0.0896 ; B worse in 2/3 seeds; seed-to-seed sd 0.1230
+      -> SMALLER than the seed spread -> treat as a tie
+   reward prediction R2 at k=1 (mean over seeds): A 0.600  B 0.475  C 0.440  D 0.758
+
+3. RATE - reward R2 lost between k=1 and k=15 (a separate question from level)
+   A · reward + reconstruction            R2 drop 0.040   MSE growth 1.87x
+   B · reward only                        R2 drop 0.061   MSE growth 1.70x
+   C · reward + irrelevant-scene aux      R2 drop 0.034   MSE growth 1.36x
+   D · reward + next-latent (EMA)         R2 drop 0.051   MSE growth 1.98x
+   drop(B) - drop(A): mean +0.0006 R2; B degrades more in 2/3 seeds; seed-to-seed sd 0.0168
+      -> SMALLER than the seed spread -> treat as a tie
+   drop(B) - drop(C): mean +0.0078 R2; B degrades more in 2/3 seeds; seed-to-seed sd 0.0096
+      -> SMALLER than the seed spread -> treat as a tie
+   drop(B) - drop(D): mean -0.0016 R2; B degrades more in 2/3 seeds; seed-to-seed sd 0.0169
+      -> SMALLER than the seed spread -> treat as a tie
+
+4. ROBUST - do the seeds agree on the sign?
+   B vs A (on 3 usable seeds): level-1 sign unanimous at 16/16 horizons; planning: B worse in 2/3 seeds
+   B vs C (on 3 usable seeds): level-1 sign unanimous at 0/16 horizons; planning: B worse in 1/3 seeds
+   B vs D (on 3 usable seeds): level-1 sign unanimous at 15/16 horizons; planning: B worse in 2/3 seeds
+
+5. SELECTIVE RELEVANCE
+   goal-choice accuracy: oracle 1.00, colour-blind oracle 0.52 (what ignoring the background looks like)
+   A · reward + reconstruction            goal-choice 0.70
+   B · reward only                        goal-choice 0.62
+   C · reward + irrelevant-scene aux      goal-choice 0.62
+   D · reward + next-latent (EMA)         goal-choice 0.82
+   probe scores (MLP on z, mean over seeds). 'ceiling' = what a conv encoder of
+   the same architecture reads from the frame when trained to; a target it
+   scores low on cannot be tested at all:
+     selector_bit               ceiling 1.00 | init 0.99  A 1.00  B 0.96  C 0.58  D 1.00
+     active_goal                ceiling 0.97 | init 0.00  A 0.52  B 0.44  C 0.26  D 0.69
+     inactive_goal              ceiling 0.96 | init 0.00  A 0.00  B 0.00  C 0.00  D 0.02
+     distractor_heatmap         ceiling 0.90 | init 0.00  A 0.00  B 0.01  C 0.81  D 0.00
+     distractor_positions       ceiling 0.22 | init 0.00  A 0.00  B 0.00  C 0.30  D 0.00   <- ceiling INVALID here (an arm reads it better)
+     background_sat_val         ceiling 0.99 | init 0.66  A 0.59  B 0.00  C 0.04  D 0.07
+     background_hue_within_band ceiling 1.00 | init 0.74  A 0.72  B 0.14  C 0.00  D 0.69
+   selectivity = R2(active goal) - R2(inactive goal), mean over seeds:
+     z linear: init +0.00  A +0.42  B +0.33  C +0.26  D +0.45
+     z mlp   : init +0.00  A +0.52  B +0.44  C +0.26  D +0.66
+     h linear: init +0.00  A +0.48  B +0.43  C +0.35  D +0.56
+     h mlp   : init +0.00  A +0.49  B +0.42  C +0.31  D +0.66
+   criteria (stated in advance), judged on seeds [1, 2, 4]:
+     [x] B picks the active goal far more often than a colour-blind planner (by > 0.15)
+     [x] B selectivity (MLP, z) > 0 in every usable seed
+     [ ] B selectivity > A selectivity in every usable seed
+     [x] B drops irrelevant background detail below the untrained weights
+     [x] that background test is meaningful (readable from pixels)
+   -> mixed: read the probe figures before claiming anything.
+
+6. CONTROLS
+   did C learn its irrelevant target? distractor heatmap R2: C 0.81 vs B 0.01 (ceiling 0.90)
+   return(C) - return(B): mean -0.0335 ; B worse in 1/3 seeds; seed-to-seed sd 0.0998
+      -> SMALLER than the seed spread -> treat as a tie
+      (below 0 = forcing irrelevant content costs return)
+   D_latent failed the gate in some seeds; its numbers are not evidence about
+   self-supervised objectives there.
+   does reconstruction actually DRAW each object? contrast kept vs the real frame:
+     agent 0.34  goals 0.21  distractors 0.11
+     -> reconstruction largely ignores: goals, distractors. 'Recon encodes
+        everything' is false here, which limits what A-vs-B can show.
+
+7. MODEL QUALITY WHERE THE PLANNER USES IT  (v2 added the parking data for this)
+   reward RMSE in raw units at k=1, behaviour data -> planner trajectories:
+   A · reward + reconstruction            0.175 -> 0.513   optimism bias +0.518 of 0.527 error
+   B · reward only                        0.213 -> 0.573   optimism bias +0.577 of 0.588 error
+   C · reward + irrelevant-scene aux      0.244 -> 0.457   optimism bias +0.470 of 0.494 error
+   D · reward + next-latent (EMA)         0.131 -> 0.408   optimism bias +0.409 of 0.420 error
+   (bias close to the whole error = the planner is exploiting the model)
+
+7b. PARKING ABLATION - did the planner-parked data cause v2's planning regression?
+    paired by seed, on seeds where both versions passed the gate
+   B · reward only: 3 usable seed(s)
+     goal-choice accuracy     with parking   0.735   without   0.998
+     stopping distance (px)   with parking   9.282   without   3.001
+     optimism bias (1 step)   with parking   0.410   without   0.174
+     on-policy reward RMSE    with parking   0.410   without   0.167
+     goal choice, with minus without parking: mean -0.2633 ; parking helps in 0/3 seeds; seed-to-seed sd 0.2028
+      -> parking hurts in every usable seed
+     stopping distance, without minus with parking (px): mean -6.2812 ; parking helps in 0/3 seeds; seed-to-seed sd 3.8374
+      -> parking hurts in every usable seed
+   D · reward + next-latent (EMA): 4 usable seed(s)
+     goal-choice accuracy     with parking   0.911   without   1.000
+     stopping distance (px)   with parking   6.513   without   2.566
+     optimism bias (1 step)   with parking   0.287   without   0.130
+     on-policy reward RMSE    with parking   0.286   without   0.135
+     goal choice, with minus without parking: mean -0.0888 ; parking helps in 0/4 seeds; seed-to-seed sd 0.0661
+      -> parking hurts in every usable seed
+     stopping distance, without minus with parking (px): mean -3.9470 ; parking helps in 0/4 seeds; seed-to-seed sd 0.9592
+      -> parking hurts in every usable seed
+
+8. DISTRIBUTION SHIFT - drop in return vs in-distribution (mean over seeds)
+   4_distractors            A +0.001  B -0.002  C -0.013  D -0.002
+   fast_distractors         A +0.001  B +0.000  C +0.005  D -0.002
+   unseen_distractor_hues   A +0.002  B +0.000  C +0.001  D -0.001
+   heavy_pixel_noise        A +0.000  B +0.001  C -0.005  D -0.010
+
+==============================================================================
+Level and rate are different claims. A tie is a result. Failed or unconverged arms
+are failures, not findings. Every number above comes from this run's CSVs.
+==============================================================================

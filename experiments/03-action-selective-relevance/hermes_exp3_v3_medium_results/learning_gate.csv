@@ -1,0 +1,31 @@
+seed,arm,r2_k1>0.5,r2_k15>0,beats_hold_at_H,not_constant,return>floor,latent_ok,passed,converged,epochs_trained,status,warn_error_falls_with_horizon,r2_k1,r2_k15,return_ci95_lo_vs_floor
+0,A_recon,False,False,False,True,False,True,False,False,120,never learned within the ceiling,False,-0.07266616821289062,-0.14359045028686523,-0.002369627193547785
+0,B_task,False,False,False,True,False,True,False,False,120,never learned within the ceiling,False,-0.14605402946472168,-0.24278104305267334,-0.019131456129252912
+0,C_scene,False,True,False,True,False,True,False,False,120,never learned within the ceiling,False,0.12610667943954468,0.10234218835830688,-0.015435522771440446
+0,D_latent,True,True,True,True,True,True,True,True,90,converged,False,0.9441343545913696,0.9108876585960388,0.15029522739350795
+0,B_task_nopark,True,True,True,True,True,True,True,True,60,converged,False,0.940858006477356,0.8448916673660278,0.34729445949196813
+0,D_latent_nopark,True,True,True,True,True,True,True,True,60,converged,False,0.9122922420501709,0.8384101390838623,0.3186296157538891
+1,A_recon,True,True,True,True,True,True,True,True,70,converged,False,0.9321111440658569,0.8936750888824463,0.10553857982158661
+1,B_task,True,True,True,True,True,True,True,True,85,converged,False,0.7354229688644409,0.7155959606170654,0.0314783182926476
+1,C_scene,True,True,True,True,True,True,True,False,120,still improving at the ceiling,False,0.7412199974060059,0.7210572957992554,0.10586117692291737
+1,D_latent,True,True,True,True,True,True,True,True,65,converged,False,0.9487966895103455,0.907902181148529,0.2455925215035677
+1,B_task_nopark,True,True,True,True,True,True,True,True,60,converged,False,0.8944904804229736,0.810379147529602,0.3233257941901684
+1,D_latent_nopark,True,True,True,True,True,True,True,True,100,converged,False,0.9408193230628967,0.8622162342071533,0.4027188874781132
+2,A_recon,True,True,True,True,True,True,True,True,75,converged,False,0.9624805450439453,0.9271628260612488,0.19835266917943956
+2,B_task,True,True,True,True,True,True,True,True,95,converged,False,0.9365837574005127,0.8928800821304321,0.1291443970054388
+2,C_scene,True,True,True,True,True,True,True,False,120,never learned within the ceiling,False,0.556056022644043,0.5306946039199829,0.01450475484598428
+2,D_latent,True,True,True,True,True,True,True,True,75,converged,False,0.9488367438316345,0.9126861095428467,0.17752773836255073
+2,B_task_nopark,True,True,True,True,True,True,True,True,80,converged,False,0.8745435476303101,0.8140226602554321,0.29875231310725214
+2,D_latent_nopark,True,True,True,True,True,True,True,True,80,converged,False,0.9375976324081421,0.8875798583030701,0.40563404113054274
+3,A_recon,False,True,False,True,False,True,False,False,120,never learned within the ceiling,False,0.21765148639678955,0.19421565532684326,-0.014395140740089117
+3,B_task,False,False,False,True,False,True,False,False,120,never learned within the ceiling,False,-0.09916448593139648,-0.2002335786819458,-0.012306539551354944
+3,C_scene,False,False,False,True,False,True,False,False,120,never learned within the ceiling,False,-0.023893237113952637,-0.08984482288360596,-0.018508023489266633
+3,D_latent,False,False,False,True,False,True,False,False,120,never learned within the ceiling,False,-0.0006377696990966797,-0.11193311214447021,-0.013629284454509616
+3,B_task_nopark,True,True,True,True,True,True,True,True,60,converged,False,0.9000713229179382,0.818453848361969,0.27394807115197184
+3,D_latent_nopark,True,True,True,True,True,True,True,False,110,still improving at the ceiling,False,0.9113918542861938,0.8689942359924316,0.3028869807720184
+4,A_recon,True,True,True,True,True,True,True,True,75,converged,False,0.9625672101974487,0.9325342178344727,0.19453250728547572
+4,B_task,True,True,True,True,True,True,True,True,60,converged,False,0.9484006762504578,0.9062098860740662,0.23869855739176274
+4,C_scene,True,True,True,True,True,True,True,True,120,converged,False,0.7987973093986511,0.762057900428772,0.17972746305167675
+4,D_latent,True,True,True,True,True,True,True,True,65,converged,False,0.9484717845916748,0.9149539470672607,0.22835847772657872
+4,B_task_nopark,True,True,True,True,True,True,True,False,100,still improving at the ceiling,False,0.9348458051681519,0.8486522436141968,0.36335921809077265
+4,D_latent_nopark,True,True,True,True,True,True,True,True,90,converged,False,0.9430497288703918,0.885066568851471,0.3872228555381298
