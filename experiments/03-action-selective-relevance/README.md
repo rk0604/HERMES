@@ -14,16 +14,19 @@ This experiment closes that gap in three ways:
 3. **Selective relevance.** One piece of colour is essential and another is useless, so a
    model that discards colour wholesale now fails visibly.
 
-**Current state: v1 and v2 have both been run at `medium` scale. Neither supports a claim
-about reconstruction versus reward only. One narrow observation replicates across both
-runs: reward only training strips task-irrelevant background detail that reconstruction
-keeps. v3 is being built to fix what v2 exposed.** All notebooks are kept; each writes to
-its own Drive folder.
+**Current state: v1, v2 and v3 have all been run at `medium` scale. None of the three
+supports a claim about reconstruction versus reward only. Two findings do hold. First, reward
+only training strips task-irrelevant background detail that reconstruction keeps, in all
+three runs. Second, the planner-parked offline data added in v2 is harmful: v3's paired
+ablation shows it hurts in every usable seed, on every metric, for both arms tested, and it
+is the cause of v2's planning regression. v4 is the same pipeline with the parked share set
+to zero for all four arms.** All notebooks are kept; each writes to its own Drive folder.
 
 | notebook | source | status |
 | :--- | :--- | :--- |
 | `hermes_exp3_colab.ipynb` | `nb_src.py` | v1, run once at `medium`; results in `hermes_exp3_medium_results/` |
 | `hermes_exp3_v2_colab.ipynb` | `nb_src_v2.py` | v2, run once at `medium`; results in `hermes_exp3_v2_medium_results/` |
+| `hermes_exp3_v3_colab.ipynb` | `nb_src_v3.py` | v3, run once at `medium`; results in `hermes_exp3_v3_medium_results/` |
 
 ## What the v1 medium run showed
 
@@ -93,8 +96,9 @@ Measurements taken while building v2, each from a real run:
   | inactive goal | 0.27 | 0.63 |
   | distractor positions, by slot | 0.08 | 0.17 |
 
-  **The inactive goal, which is the sharpest selectivity test, is only testable at 48 px.**
-  Run `medium` to check the gate, but make selectivity claims from the `full` run.
+  This small CPU test suggested the inactive goal was only testable at 48 px. **The v2 run
+  contradicts that:** the notebook's own ceiling (4000 scenes, trained on the GPU) read the
+  inactive goal at 0.84 at 32 px, so it is testable at `medium` too.
   Per-slot distractor positions stay unreadable at both sizes, which is the direct evidence
   that v1's by-slot target was ill posed.
 
@@ -141,7 +145,7 @@ What blocks a claim:
 6. **The shift test is still flat**: the mean change in return under the distractor shifts is
    at most 0.008 for any arm.
 
-## Next: v3
+## What v3 changes
 
 1. **Stopping that cannot end a run on the plateau**: patience only starts counting once an arm
    has learned (held-out R squared at least 0.5), a higher minimum epoch count, and runs that
@@ -153,6 +157,87 @@ What blocks a claim:
 4. **A parking ablation** to identify the planning regression: B and D trained with and without
    the planner-parked episodes, compared on identical planning episodes.
 5. **Five seeds.**
+
+Checked before any GPU run. The stopping rule was tested inside the notebook's own training
+function with scripted held-out R squared: a run that sat on a 12 epoch plateau and then
+learned kept training through the plateau (v2's rule would have stopped it at epoch 10) and
+stopped at epoch 18 once it had learned and flattened; a run that never learned trained to
+the ceiling and was reported as "never learned within the ceiling"; a run that learned
+immediately stopped at the minimum epoch count. The full notebook also ran end to end at the
+`quick` preset, including a re-run that loaded every result from the cache.
+
+## What the v3 medium run showed
+
+Five seeds, 32 px, a 120 epoch ceiling, six networks per seed, 200 planning episodes per arm
+with every baseline identical to v1 and v2. 158 GPU minutes in total. Results in
+`hermes_exp3_v3_medium_results/`.
+
+**The headline result is the parking ablation, and it is unanimous.** Paired by seed, on the
+seeds where both versions passed the gate:
+
+| | B with parking | B without | D with parking | D without |
+| :--- | :--- | :--- | :--- | :--- |
+| goal choice accuracy | 0.735 | 0.998 | 0.911 | 1.000 |
+| stopping distance | 9.28 px | 3.00 px | 6.51 px | 2.57 px |
+| optimism bias at 1 step | 0.410 | 0.174 | 0.287 | 0.130 |
+| reward RMSE on planner trajectories | 0.410 | 0.167 | 0.286 | 0.135 |
+| learning gate | 3 of 5 seeds | 5 of 5 | 4 of 5 | 5 of 5 |
+| reward R² at k=1 | 0.475 ± 0.552 | 0.909 ± 0.028 | 0.758 ± 0.424 | 0.929 ± 0.016 |
+
+Parking helps in 0 of 3 usable seeds for B and 0 of 4 for D, on both goal choice and stopping
+distance. Two independent lines of evidence agree with the ablation. First, v1 had no parking
+data and its arm B reached normalised return 0.528 and goal choice 0.988, which v3's arm B
+without parking reproduces at 0.556 and 0.994 in a separate notebook. Second, the mechanism
+is visible in training: on seed 0, arm B with parking drives training reward MSE from 0.888 at
+epoch 10 down to 0.079 at epoch 120 while held-out R² at 15 steps falls from -0.028 to -0.697,
+and the same seed without parking converges by epoch 60 with held-out R² at 0.757. The latent
+never collapsed in either case (per-dimension spread 0.78 to 0.89, effective rank 21 to 28),
+so the failure is memorisation of the parked reward spike, not representation collapse and not
+a failure to fit the training set. The parked episodes put about 15 percent of all steps inside
+the bonus radius, which makes the reward distribution bimodal (see `fig02_data_coverage.png`).
+
+Also established:
+
+* **B strips irrelevant background detail, now in all five seeds and against a valid ceiling.**
+  Background saturation and brightness: ceiling 0.99, untrained weights 0.66, arm A 0.59, arm
+  B 0.00 in every seed. Shade within the hue band: ceiling 1.00, untrained 0.74, A 0.72, B 0.14
+  on average and 0.00 in all three usable seeds.
+* **The negative control finally works and the ceiling is finally a ceiling.** C reads the
+  distractor heatmap at 0.81 against a ceiling of 0.90 while B reads 0.01. Every probe target
+  is now valid except per-slot distractor positions, which the verdict flags as invalid, and
+  distractor hues, which nothing can read.
+* **The fixed stopping rule behaved as designed.** The eleven runs that did not converge were
+  trained to the full ceiling and labelled "never learned within the ceiling" rather than
+  called converged, and the arms without parking passed on the same seeds where the parked
+  arms failed, which confirms the failures were caused by the data and not by the rule.
+
+What still blocks the main claim:
+
+1. **A versus B is a tie on three usable paired seeds.** Return difference +0.037 against a
+   seed spread of 0.070, rate difference +0.0006 R². C versus B and D versus B are ties too.
+2. **A and C were never trained without parking**, so the only A versus B comparison available
+   sits in the configuration the ablation shows to be harmful.
+3. **Selectivity does not separate A from B.** The inactive goal is readable in principle
+   (ceiling 0.96) and every trained arm drops it (0.00 to 0.02). Arm A is more selective than
+   B in two of three usable seeds, so the stated criterion that B beats A in every usable seed
+   fails and the verdict reads "mixed".
+4. **Reconstruction does not draw the small objects.** Contrast kept against each image's own
+   background: agent 0.34, goals 0.21, distractors 0.11. "Reconstruction encodes everything" is
+   false here, which caps what A versus B can show in this environment.
+5. **The planner still exploits the model.** Reward RMSE at 1 step goes from 0.175 on behaviour
+   data to 0.513 on the planner's own trajectories for A, and 0.213 to 0.573 for B, with the
+   optimism bias accounting for almost the whole error. Removing the parking data reduces the
+   bias to 0.174 and 0.130 but does not remove it.
+6. **The shift test is still flat**: at most 0.013 change in mean return, because no arm except
+   C encodes distractors.
+
+## What v4 changes
+
+One change, chosen because the ablation identified it: **`p_park = 0` for all four arms**, five
+seeds, everything else held fixed. That is the configuration in which the arms reach goal choice
+0.994 to 1.000 and pass the gate in five of five seeds, and it is the first configuration in
+which A versus B can be read at all. Secondary: raise the epoch ceiling for arm C, which
+converged in only one of five seeds even at 120 epochs.
 
 ## The environment
 
@@ -245,21 +330,23 @@ auxiliary target, a reconstruction fidelity check on arm A, and dataset caching.
 
 ## Running it
 
-1. Open `hermes_exp3_v2_colab.ipynb` in Colab (GPU runtime).
+1. Open `hermes_exp3_v3_colab.ipynb` in Colab (GPU runtime).
 2. Runtime, Run all, and approve the Google Drive prompt. Everything lands in
-   `MyDrive/hermes_exp3_v2/<scale>/`.
+   `MyDrive/hermes_exp3_v3/<scale>/`.
 3. If Colab disconnects, reconnect and Run all again: finished runs, half finished runs,
    cached datasets and finished evaluations are all picked up.
 
 | scale | frames | seeds | training data | max epochs | purpose |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | `quick` | 24 px | 1 | 96 episodes | 4 | proves every cell runs; expected to fail the gate |
-| `medium` | 32 px | 3 | 6000 episodes | 120 | gate check |
-| `full` | 48 px | 4 | 8000 episodes | 150 | the headline configuration, and the only one where the inactive goal probe is testable |
+| `medium` | 32 px | 5 | 6000 episodes | 120 | gate check, parking ablation |
+| `full` | 48 px | 5 | 8000 episodes | 150 | the headline configuration |
 
-Epochs are a ceiling: arms stop at a held-out plateau, so run time is not fixed. For
-reference, v1 measured 2.8 s/epoch for the task only arm and 5.0 s/epoch for the
-reconstruction arm at 32 px.
+Each seed trains six networks: the four arms, plus B and D again on data without the
+planner-parked episodes. Epochs are a ceiling: an arm stops once it has learned and then
+plateaued, so run time is not fixed. For reference, the v2 medium run measured about 3
+minutes per run for the task only arm and about 6 for the reconstruction arm, including
+runs that its stopping rule ended early.
 
 ## Limitations
 
@@ -271,18 +358,25 @@ reconstruction arm at 32 px.
 * A 32 dimensional latent against roughly seven relevant quantities applies no capacity
   pressure.
 * The planner has no value function and sees 10 steps ahead; the oracle shares the limit.
-* Parking data makes the offline set partly planner shaped, so on-policy accuracy is now
-  partly a property of the data. The behaviour data column remains the out of distribution
-  reading.
+* Parking data makes the offline set partly planner shaped, so on-policy accuracy is partly a
+  property of the data. The behaviour data column remains the out of distribution reading.
+  v3 measured the cost of this and it is large: the parked share is now set to zero in v4.
+* The two goal shapes are not equally legible to the learned encoders. Against ceilings of
+  0.99 and 0.98, the best arm reads ring position at 0.19 and plus position at 0.79, so the
+  goal probes are not symmetric.
 
 ## Files
 
 | path | purpose |
 | :--- | :--- |
+| `hermes_exp3_v3_colab.ipynb` | **the current experiment**, self contained, drop into Colab |
+| `nb_src_v3.py` | v3 source in plain Python |
+| `hermes_exp3_v3_medium_results/` | the v3 medium run: CSVs, figures, GIFs, `config.json`, VERDICT.txt |
+| `PORTFOLIO_BRIEF.md` | the write up brief: every supported number with its source file, and the figure list |
 | `hermes_exp3_v2_colab.ipynb` | v2, run once at `medium` |
 | `nb_src_v2.py` | v2 source in plain Python |
 | `hermes_exp3_v2_medium_results/` | the v2 medium run: CSVs, figures, GIFs, VERDICT.txt |
 | `hermes_exp3_colab.ipynb`, `nb_src.py` | v1, kept unchanged for reference |
-| `build_notebook.py` | regenerates a notebook: `python build_notebook.py nb_src_v2.py` |
+| `build_notebook.py` | regenerates a notebook: `python build_notebook.py nb_src_v3.py` |
 | `design_check.py`, `design_check_momentum.py` | numpy design checks behind the dynamics constants |
 | `hermes_exp3_medium_results/` | the v1 medium run: CSVs, figures, VERDICT.txt |
