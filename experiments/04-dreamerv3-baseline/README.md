@@ -142,7 +142,17 @@ batch_length)`, i.e. 0.5 for Crafter and 0.25 for Atari100k, so a Crafter run is
 * **The replay buffer is written to Drive** as compressed chunks at every checkpoint and
   nothing deletes them; the folder grows for the whole run.
 * **The JAX profiler cannot be disabled from the config** and fires at updates 100-120;
-  the GPU smoke test runs past it on purpose.
+  the GPU smoke test runs past it on purpose. It is verified from what the profiler leaves
+  behind (`Start`/`Stop JAX profiler` in `stdout.log` and a `.xplane.pb` trace), and an
+  incomplete earlier attempt is renamed and redone rather than resumed, because a resume
+  that restarts between updates 100 and 120 stops a profiler that was never started in that
+  process and crashes with "No profile started".
+* **Logged training metrics are window means.** DreamerV3 averages every `train/*` metric
+  over each log window (`elements.Agg`, default `mean`) before writing it, so
+  `train/opt/updates` in `metrics.jsonl` is the mean of the counter over the window, not the
+  count, and nothing is written for the last partial window. Measured locally: largest
+  logged value 131, true count 135. The first A100 smoke test failed on exactly this (logged
+  110, true count about 140); the true count is in each checkpoint's `agent.pkl` counters.
 * **`ale_py`:** 0.9.0 is the author's pin and has ROMs bundled; it may lack a wheel for the
   Python version Colab ships, in which case the notebook falls back to 0.12.1 and says so.
 * **Windows only:** `elements.LocalPath.glob` returns backslash paths, `Path.name` then

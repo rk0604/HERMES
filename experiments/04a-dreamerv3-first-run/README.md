@@ -105,6 +105,10 @@ Atari wrapper fix, and only if the pinned `ale_py` has no wheel for Colab's Pyth
   slowly. Expect "it learns", not a match.
 * **Environments are not seeded** by the stock config; the same seed plays different
   episodes on a rerun. True of the paper's runs too.
+* **Logged training metrics are window means.** DreamerV3 averages every `train/*` metric
+  over each log window before writing it, so e.g. `train/opt/updates` in `metrics.jsonl`
+  trails the true update count; the true count is in the checkpoint. The smoke test
+  therefore checks the profiler window from the profiler's own output, not from that metric.
 * **No checkpoint at the end of training** (wall-clock timer only); `scores.jsonl` and
   `metrics.jsonl` are complete regardless. The replay buffer on Drive grows for the whole
   run (Pong: order of a few GB).

@@ -406,9 +406,30 @@ print(f'{CONFIG_BLOCK}: {BLOCK_STEPS:,} agent steps = {BLOCK_STEPS * FRAMES_PER_
 #
 # Checkpoint and log timers are set to 5 s so a one-minute run exercises both. After each run
 # the cell checks what must exist: `metrics.jsonl`, `scores.jsonl`, a checkpoint with its
-# `done` marker, saved replay chunks.
+# `done` marker, saved replay chunks. Runs that already finished are not repeated, so
+# re-running this cell is quick.
+#
+# **How the profiler is checked, and why not with a metric.** `train/opt/updates` in
+# `metrics.jsonl` looks like the update count but is not: DreamerV3 averages every training
+# metric over each log window before writing it, so the logged value is the window's *mean*
+# counter and trails the true count, and nothing is written after the last window. (Measured
+# locally: largest logged value 131, true count 135.) The direct evidence is what the
+# profiler itself leaves behind: the lines `Start JAX profiler` and `Stop JAX profiler` in the
+# run's `stdout.log`, and a `.xplane.pb` trace file under `plugins/profile/`.
 
 # %%
+def profiler_ran(logdir):
+    """True if the run started and stopped DreamerV3's JAX profiler and wrote its trace."""
+    logdir = pathlib.Path(logdir)
+    log = (logdir / 'stdout.log').read_text(errors='replace') if (logdir / 'stdout.log').exists() else ''
+    return 'Start JAX profiler' in log and 'Stop JAX profiler' in log and bool(list(logdir.rglob('*.xplane.pb')))
+
+def checkpoint_counters(logdir):
+    """Update/action counters as of the last checkpoint (which can trail the end of a run)."""
+    import pickle
+    ckpt = pathlib.Path(logdir) / 'ckpt'
+    return pickle.loads((ckpt / (ckpt / 'latest').read_text().strip() / 'agent.pkl').read_bytes())['counters']
+
 def check_logdir(logdir, min_step):
     logdir = pathlib.Path(logdir)
     for f in ('metrics.jsonl', 'scores.jsonl', 'config.yaml', 'ckpt/latest', 'DONE.json'):
@@ -427,22 +448,37 @@ def check_logdir(logdir, min_step):
 
 smoke = ROOT / 'smoke'
 SMOKE_FLAGS = ['--task', TASK, '--run.save_every', '5', '--run.log_every', '5']
-r = run_dreamer(smoke / 'cpu', [CONFIG_BLOCK, 'debug'], ['--run.steps', '600', *SMOKE_FLAGS], quiet=True)
-assert r['exit'] == 0, 'debug run failed; read smoke/cpu/stdout.log'
+if (smoke / 'cpu' / 'DONE.json').exists():
+    print('cpu: already finished, not repeated')
+else:
+    r = run_dreamer(smoke / 'cpu', [CONFIG_BLOCK, 'debug'], ['--run.steps', '600', *SMOKE_FLAGS], quiet=True)
+    assert r['exit'] == 0, 'debug run failed; read smoke/cpu/stdout.log'
 keys = check_logdir(smoke / 'cpu', 500)
 print('loss keys:', [k for k in keys if k.startswith('train/loss/')])
 
 if PLATFORM == 'cuda':
-    # debug: train_ratio 8 with batch 8x10 = 80, i.e. one update per 10 agent steps after an
-    # 80-step warm-up; 1500 steps gives ~140 updates, past the profiler window.
-    r = run_dreamer(smoke / 'gpu', [CONFIG_BLOCK, 'debug'], ['--jax.platform', 'cuda', '--run.steps', '1500', *SMOKE_FLAGS])
-    assert r['exit'] == 0, 'GPU debug run failed; scroll up: the first error is the real one'
-    check_logdir(smoke / 'gpu', 1400)
-    rows = lineage(read_jsonl(smoke / 'gpu' / 'metrics.jsonl'))
-    updates = max(r.get('train/opt/updates', 0) for r in rows)
-    assert updates >= 120, f'only {updates} updates; the profiler window (100-120) was not exercised'
-    print(f'GPU path ok: {updates:.0f} gradient updates, profiler trace written: '
-          f'{bool(list((smoke / "gpu").rglob("*.xplane.pb")))}')
+    gpu = smoke / 'gpu'
+    if profiler_ran(gpu):
+        print('gpu: already ran on the GPU through the profiler window, not repeated')
+    else:
+        if gpu.exists():
+            # An earlier attempt stopped short. It is not resumed: a resume that restarts between
+            # updates 100 and 120 makes DreamerV3 stop a profiler this process never started,
+            # which raises "No profile started". It is renamed, not deleted, and the test restarts.
+            aside = gpu.with_name(f'gpu_incomplete_{time.strftime("%Y%m%d_%H%M%S")}')
+            gpu.rename(aside)
+            print(f'gpu: earlier attempt did not reach the profiler window; moved to {aside.name}')
+        # debug: train_ratio 8 over a batch of 8x10 = 80 steps is one update per 10 agent steps
+        # after an 80-step warm-up, so 2000 steps is about 190 updates, well past 120.
+        r = run_dreamer(gpu, [CONFIG_BLOCK, 'debug'], ['--jax.platform', 'cuda', '--run.steps', '2000', *SMOKE_FLAGS])
+        assert r['exit'] == 0, 'GPU debug run failed; scroll up: the first error is the real one'
+    check_logdir(gpu, 1400)
+    assert profiler_ran(gpu), (
+        'the GPU run never started and stopped the JAX profiler (no "Stop JAX profiler" line in '
+        'smoke/gpu/stdout.log, or no .xplane.pb trace), so updates 100-120 were not reached')
+    counters = checkpoint_counters(gpu)
+    print(f'GPU path ok: the profiler started and stopped, trace written; '
+          f'{counters["updates"]} gradient updates as of the last checkpoint')
 else:
     print('no GPU: the CUDA smoke test is skipped')
 
