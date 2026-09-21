@@ -554,6 +554,10 @@ with the pinned versions listed in `README.md`. What that settled:
   under `abl_norewval` the reward and replay-value losses do, under `abl_novalue` the
   replay-value loss does, and no ablation changes any other row. Actor and critic losses on
   imagined states send zero into the latent in every arm, as `ac_grads: False` implies.
+  The zeros are exact everywhere. The untouched rows match bit for bit on a CPU, but on an
+  A100 they agree only to about four significant figures, because each arm is compiled
+  separately (a stop-gradient changes the graph, so XLA fuses differently) and the compute
+  dtype is bfloat16. The notebook's cross-arm check allows 5% for that reason.
 * **Two initialisation facts the table exposed.** The reward and value heads are
   zero-initialised (`outscale: 0.0`, `configs.yaml:98,101`), so at step 0 they send no
   gradient into the latent regardless of any flag; the gradient test perturbs those

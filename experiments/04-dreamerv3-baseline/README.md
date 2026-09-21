@@ -120,7 +120,7 @@ batch_length)`, i.e. 0.5 for Crafter and 0.25 for Atari100k, so a Crafter run is
 | pinned dependency set installs and imports | local CPU venv, Python 3.13.14 | jax 0.5.0, numpy 2.5.3, elements 3.22.1, ninjax 3.6.3, portal 3.8.1, scope 0.7.1, optax 0.2.5, chex 0.1.90, einops 0.8.2, crafter 1.8.3, ale_py 0.12.1, av 18.1.0 |
 | `crafter debug`, `atari100k debug`, `dummy debug` train end to end | local CPU | exit 0; metrics, scores, checkpoint, replay chunks, scope outputs written |
 | resume by re-running with the same `--logdir` | local CPU | second run loads `ckpt/latest`, continues; re-logged steps handled by `lineage()` in the notebook |
-| `rec_grad.patch` applies to `e3f0224` and does what it claims | `git apply --check`; `inspect_agent.py` gradient-flow table on all four arms | `image → enc/RSSM` gradient exactly 0 only under `abl_norecon`; `rew` and `repval` exactly 0 under `abl_norewval`; `repval` 0 under `abl_novalue`; every other row unchanged |
+| `rec_grad.patch` applies to `e3f0224` and does what it claims | `git apply --check`; `inspect_agent.py` gradient-flow table on all four arms, CPU and A100 | `image → enc/RSSM` gradient exactly 0 only under `abl_norecon`; `rew` and `repval` exactly 0 under `abl_norewval`; `repval` 0 under `abl_novalue`; every other row unchanged (bit-identical on CPU, agreeing to ~0.02% on an A100, see the note below) |
 | `atari_ale_compat.patch` | Atari100k debug run with ale_py 0.12.1 | exit 0 (fails without it: `setInt(): incompatible function arguments`) |
 | RSSM shapes and one-hot latents | `inspect_agent.py`, debug config | `z` and `ẑ` one-hot; imagination starts from all `B×T` states for 15 steps |
 | whole notebook, `PRESET='smoke'` | executed locally with nbconvert on the CPU venv kernel (2026-09-15) | all 19 code cells ran, 0 errors: clone + patches, 4 inspection arms, 2 CPU smoke runs, 2 timing runs, the 8-run matrix, 3 plots, summary table; ~8 minutes |
@@ -152,3 +152,11 @@ batch_length)`, i.e. 0.5 for Crafter and 0.25 for Atari100k, so a Crafter run is
   they send no gradient into the latent regardless of any flag; the gradient-flow test
   gives those kernels a small random value to test the path rather than the initial
   value. The KL terms sit at the 1-nat free-bits floor at initialisation.
+* **Gradient norms are not bit-identical across arms on a GPU.** Each arm is inspected in
+  its own process, and a stop-gradient changes the graph XLA compiles, so operations fuse
+  and accumulate in a different order; DreamerV3 also computes in bfloat16. On a CPU the
+  untouched rows matched exactly, but on an A100 they differ in the fifth significant
+  figure (about 0.015%). The cross-arm check therefore compares within 5%, which is far
+  above that noise and far below any real leak, since a leaked gradient goes to zero or
+  moves by orders of magnitude. The first A100 run tripped an earlier, exact-equality
+  version of this check; the per-arm zero checks passed throughout.

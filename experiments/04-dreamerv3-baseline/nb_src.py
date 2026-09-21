@@ -342,18 +342,39 @@ INSPECT = {'baseline': inspect_arm('baseline', show=True)}
 
 # %% [markdown]
 # The same table for the three ablation arms. Each must show an exact zero for the loss its
-# flag disables (`repval`; `rew` and `repval`; `image`) and leave every other row unchanged.
+# flag disables (`repval`; `rew` and `repval`; `image`) and leave every other row alone.
+#
+# The second half of the cell checks that "leave alone" across arms. It compares within a
+# tolerance rather than demanding identical numbers, because each arm is a separate process
+# whose computation graph differs — a stop-gradient changes what XLA compiles, so operations
+# fuse and accumulate in a different order — and DreamerV3 computes in bfloat16, which keeps
+# only about three decimal digits. On a CPU these came out bit-identical; on an A100 the arms
+# agree to roughly four significant figures. A gradient that genuinely leaked would go to
+# zero or move by orders of magnitude, not by hundredths of a percent, so a few percent of
+# tolerance separates "numerical noise" from "semantic change" with room to spare.
 
 # %%
 for arm in ('novalue', 'norewval', 'norecon'):
     print(f'\n===== {arm}: --configs {" ".join(ARMS[arm])} =====')
     INSPECT[arm] = inspect_arm(arm)
+
+TOL = 0.05                     # 5%; observed noise between arms is ~0.02% on an A100
 base = INSPECT['baseline']['grad_norms']
+worst_rel, worst_where = 0.0, 'nothing'
 for arm in ('novalue', 'norewval', 'norecon'):
     for loss, norms in INSPECT[arm]['grad_norms'].items():
-        if loss not in EXPECT_ZERO[arm].split(','):
-            assert norms == base[loss], f'{arm} changed the gradient of {loss}, which it should not touch'
-print('\nEvery ablation changes exactly the gradients it claims to, and nothing else.')
+        if loss in EXPECT_ZERO[arm].split(','):
+            continue           # this one is supposed to change: it is checked above, per arm
+        for module, value in norms.items():
+            ref = base[loss][module]
+            rel = abs(value - ref) / ref if ref else abs(value - ref)
+            if rel > worst_rel:
+                worst_rel, worst_where = rel, f'{arm}: {loss} -> {module}'
+            assert rel <= TOL, (
+                f'{arm} changed the gradient of {loss} into {module} by {rel:.1%} '
+                f'({value:.4e} against baseline {ref:.4e}), which it should not touch')
+print(f'\nEvery ablation zeroes exactly the gradients it claims to and leaves the rest alone '
+      f'(largest disagreement with the baseline: {worst_rel:.3%}, {worst_where}).')
 
 # %% [markdown]
 # <a name="runner"></a>
