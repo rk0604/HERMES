@@ -355,10 +355,13 @@ INSPECT = {'baseline': inspect_arm('baseline', show=True)}
 
 # %%
 for arm in ('novalue', 'norewval', 'norecon'):
+    if arm in INSPECT:         # already inspected in this session: re-running the check is instant
+        print(f'{arm}: using the inspection already in memory')
+        continue
     print(f'\n===== {arm}: --configs {" ".join(ARMS[arm])} =====')
     INSPECT[arm] = inspect_arm(arm)
 
-TOL = 0.05                     # 5%; observed noise between arms is ~0.02% on an A100
+TOL = 0.05                    # 5%; observed noise between arms is ~0.02% on an A100
 base = INSPECT['baseline']['grad_norms']
 worst_rel, worst_where = 0.0, 'nothing'
 for arm in ('novalue', 'norewval', 'norecon'):
