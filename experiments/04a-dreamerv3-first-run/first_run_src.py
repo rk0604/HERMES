@@ -193,6 +193,13 @@ if IN_COLAB:
     if 'ERROR' in ale or 'No matching distribution' in ale:
         print('ale_py==0.9.0 has no wheel for this Python; falling back to ale_py==0.12.1\n', ale[-1500:])
         sh([PYTHON, '-m', 'pip', 'install', '-q', 'ale_py==0.12.1'])
+    # Colab's image can ship a newer JAX CUDA plugin (jax-cuda13-*) next to the pinned CUDA 12
+    # one. Both register the "cuda" device and JAX 0.5.0 aborts on the newer one, so remove it.
+    listing = sh([PYTHON, '-m', 'pip', 'list', '--format=freeze'])
+    stray = [l.split('==')[0] for l in listing.splitlines() if re.match(r'jax[-_]cuda13', l, re.I)]
+    if stray:
+        print('removing JAX CUDA 13 packages that conflict with the pinned CUDA 12 build:', stray)
+        sh([PYTHON, '-m', 'pip', 'uninstall', '-y', *stray])
     (ROOT / 'records' / 'pip_freeze.txt').write_text(sh([PYTHON, '-m', 'pip', 'freeze']))
 else:
     print('Not on Colab: assuming the current interpreter already has the pinned packages.')
@@ -208,7 +215,7 @@ check = sh([PYTHON, '-c', (
 )], check=False)
 print(check)
 if PLATFORM == 'cuda':
-    assert 'CudaDevice' in check, (
+    assert 'CudaDevice' in check and 'bfloat16 matmul ok' in check, (
         'JAX does not see the GPU. Read the output above: the real cause is usually a wheel/CUDA mismatch.')
 found = re.search(r'ale_py==(\S+)', check)
 assert found, 'the version check did not complete; the output above is the real error'
