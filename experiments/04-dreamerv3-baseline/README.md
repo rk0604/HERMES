@@ -1,9 +1,9 @@
 # Experiment 4: DreamerV3 baseline and learning-signal ablations
 
-**Status: not yet run on a GPU.** No training result is reported here until a real run
-exists. Everything in this folder has been verified on a CPU with DreamerV3's tiny `debug`
-configuration (see [Verification status](#verification-status) for exactly what that
-covers and what it does not).
+**Status: complete.** All 8 runs (4 arms × Crafter and Atari100k Pong, `size12m`, one seed)
+finished on a Colab A100 in September 2026. **Results, figures and limitations are in
+[`RESULTS.md`](RESULTS.md)**; the data behind them is in `results/`. This README describes the
+setup and what was verified where.
 
 This experiment leaves the toy world of Experiments 1 to 3 and moves to the real thing:
 Hafner et al.'s own DreamerV3 code, unmodified except for two small, verified patches. The
@@ -25,9 +25,9 @@ From the paper and its supplement (`references/`):
   does not state its model size or seed count; the paper's defaults are the **200M** model
   and **5 seeds** per benchmark, one A100 per run, and the curves show a mean with shaded
   spread.
-* Finding: Dreamer "rests predominantly on the unsupervised reconstruction loss of its
-  world model"; removing reward and value gradients costs little, removing reconstruction
-  gradients costs a lot on average.
+* Finding: "the performance of Dreamer predominantly rests on the unsupervised
+  reconstruction loss of its world model" (Fig. 6b caption); removing reward and value
+  gradients costs little, removing reconstruction gradients costs a lot on average.
 
 ## What this experiment runs
 
@@ -36,8 +36,8 @@ From the paper and its supplement (`references/`):
 | code | upstream `danijar/dreamerv3` at `e3f0224` (2026-05-25) plus two patches below |
 | tasks | `crafter_reward` (config block `crafter`, 1.1M env steps) and `atari100k_pong` (block `atari100k`, 110K agent steps = 440K frames) |
 | arms | baseline, `abl_novalue`, `abl_norewval`, `abl_norecon` |
-| seeds | 1 to start; the notebook's timing section projects the cost of more |
-| model size | chosen from measured timing; the 200M default is what the paper used and is expected to be far beyond a Colab budget for Crafter |
+| seeds | 1 (seed 0) per arm |
+| model size | `size12m`, chosen from the measured timing (about 11.5 h per Crafter run and 0.6 h per Pong run on an A100); the paper's 200M default is far beyond a Colab budget for Crafter |
 | compute | one Colab GPU session at a time, resumable, everything on Google Drive |
 
 The arms map onto the code as follows. The first two flags already exist upstream; the
@@ -75,6 +75,8 @@ verified by assertions on the patched files. Nothing else in the upstream code i
 
 | file | purpose |
 | :--- | :--- |
+| `RESULTS.md` | the results: scores, world-model diagnostics, comparison with the paper, limitations |
+| `results/` | `summary.csv`, every episode and every logged metric of all 8 runs (gzipped CSV), and the figures |
 | `ARCHITECTURE_MAP.md` | paper concepts traced to file and line in the code; read this first |
 | `nb_src.py` | source of the notebook, percent format; **edit this, not the `.ipynb`** |
 | `build_notebook.py` | builds `hermes_exp04_colab.ipynb` from `nb_src.py`, embedding the three files below |
@@ -126,9 +128,10 @@ batch_length)`, i.e. 0.5 for Crafter and 0.25 for Atari100k, so a Crafter run is
 | `atari_ale_compat.patch` | Atari100k debug run with ale_py 0.12.1 | exit 0 (fails without it: `setInt(): incompatible function arguments`) |
 | RSSM shapes and one-hot latents | `inspect_agent.py`, debug config | `z` and `ẑ` one-hot; imagination starts from all `B×T` states for 15 steps |
 | whole notebook, `PRESET='smoke'` | executed locally with nbconvert on the CPU venv kernel (2026-09-15) | all 19 code cells ran, 0 errors: clone + patches, 4 inspection arms, 2 CPU smoke runs, 2 timing runs, the 8-run matrix, 3 plots, summary table; ~8 minutes |
-| the install cell on Colab (JAX CUDA wheel, Python version, `ale_py==0.9.0` wheel) | **not verified** | most likely place to need a fix on first Colab run; the cell prints the real error |
-| bfloat16 on the assigned GPU, the GPU smoke test, the profiler window | **not verified** | the notebook's smoke section covers them on first Colab run |
-| timing, cost, model size choice | **not verified** | measured by the notebook, never estimated here |
+| the install cell on Colab (JAX CUDA wheel, Python version) | Colab A100, September 2026 | JAX 0.5.0 on CUDA works; a later Colab image shipped a conflicting `jax-cuda13` plugin, which the install cell now removes, and the GPU check now requires a real bfloat16 matmul |
+| bfloat16 on the GPU, the GPU smoke test, the profiler window | Colab A100 | passed, after the smoke check was changed to read the profiler's own output instead of a window-averaged metric |
+| timing, cost, model size choice | Colab A100, measured by the notebook | `size12m`: Crafter 26.6 env steps/s (11.5 h per run), Pong 49.1 env steps/s (0.6 h per run); `size50m` 17.0 and 31.5 env steps/s |
+| the full matrix | Colab A100 | all 8 runs complete with `DONE.json`; results in `RESULTS.md` |
 
 ## Known limitations and things that bit us
 
