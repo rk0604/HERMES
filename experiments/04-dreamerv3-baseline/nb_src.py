@@ -24,6 +24,7 @@
 # 8. [Timing and cost](#timing) — measure, then project the whole run matrix
 # 9. [The run matrix](#matrix) — baseline + 3 ablations × tasks × seeds, resumable
 # 10. [Results](#results) — score curves, world-model losses, open-loop videos, summary table
+# 11. [Aggregate and write-up figures](#aggregate) — all runs in three CSV files, four figures
 #
 # ## How to run, and how to resume
 #
@@ -726,7 +727,7 @@ import gzip
 import matplotlib.pyplot as plt
 import numpy as np
 
-COLORS = {'baseline': '#1f1f1f', 'novalue': '#1f77b4', 'norewval': '#2ca02c', 'norecon': '#d62728'}
+COLORS = {'baseline': '#0b0b0b', 'novalue': '#2a78d6', 'norewval': '#1baf7a', 'norecon': '#eb6834'}   # colour-blind checked
 LABELS = {'baseline': 'Dreamer (baseline)', 'novalue': 'No value gradients',
           'norewval': 'No reward or value gradients', 'norecon': 'No reconstruction gradients'}
 PLOTS = ROOT / 'plots'
@@ -915,3 +916,245 @@ summary.to_csv(ROOT / 'records' / 'summary.csv', index=False)
 pd.set_option('display.width', 200)
 print(summary.round(3).to_string(index=False))
 print(f'\nplots: {sorted(p.name for p in PLOTS.glob("*.png"))}\nroot:  {ROOT}')
+
+# %% [markdown]
+# <a name="aggregate"></a>
+# ## 11. One copy of everything, and figures for a write-up
+#
+# The cells above read each run's files and draw quick diagnostic plots. This section writes
+# every run into three files under `records/aggregate/` on Drive, so later analysis needs
+# neither this notebook's state nor a GPU:
+#
+# * `scores_all.csv`: every finished episode of every run, one row each, labelled with
+#   `task`, `size`, `arm` and `seed`. Steps that were logged again after a resume are already
+#   removed (`lineage()`).
+# * `metrics_all.csv`: every logged scalar of every run, labelled the same way.
+# * `summary.csv`: one row per run. `final_score` is the mean return over the episodes in the
+#   last 10% of the budget, with its standard deviation *across those episodes* (one seed, so
+#   not across seeds) and their count. The `loss_*` columns are means over the last 10% of
+#   logged steps, steadier than the single last value in the table above.
+#
+# `wall_hours` and `sessions` count only sessions that ended with the run cell returning or
+# being interrupted. A session that Colab killed leaves no record, so both are lower bounds.
+
+# %%
+AGG = ROOT / 'records' / 'aggregate'
+AGG.mkdir(parents=True, exist_ok=True)
+SIZE_NAME = '_'.join(size_blocks()) or 'default'
+
+score_frames, metric_frames, agg_rows = [], [], []
+for (task, arm, seed), run in sorted(RUNS.items()):
+    tag = dict(task=task, size=SIZE_NAME, arm=arm, seed=seed)
+    scores, metrics = pd.DataFrame(run['scores']), pd.DataFrame(run['metrics'])
+    score_frames.append(scores.assign(**tag))
+    metric_frames.append(metrics.assign(**tag))
+    budget = run_steps(task) * (4 if task == 'atari100k' else 1)   # scores.jsonl logs Atari in frames
+    final = scores[scores.step >= 0.9 * budget]['episode/score'] if len(scores) else pd.Series(dtype=float)
+    sessions = read_jsonl(run['logdir'] / 'sessions.jsonl')
+    row = dict(**tag, done=run['done'], last_step=int(metrics.step.max()) if len(metrics) else 0,
+               episodes=len(scores), final_score=final.mean(), final_score_std=final.std(),
+               n_final_episodes=len(final), mean_score=scores['episode/score'].mean() if len(scores) else np.nan,
+               wall_hours=sum(s['wall_seconds'] for s in sessions) / 3600, sessions=len(sessions))
+    for key in ('image', 'rew', 'con', 'dyn', 'rep'):
+        col = f'train/loss/{key}'
+        if col in metrics:
+            row[f'loss_{key}'] = metrics[metrics.step >= 0.9 * metrics.step.max()][col].dropna().mean()
+    agg_rows.append(row)
+
+pd.concat(score_frames, ignore_index=True).to_csv(AGG / 'scores_all.csv', index=False)
+pd.concat(metric_frames, ignore_index=True).to_csv(AGG / 'metrics_all.csv', index=False)
+pd.DataFrame(agg_rows).to_csv(AGG / 'summary.csv', index=False)
+print(pd.DataFrame(agg_rows).round(3).to_string(index=False))
+print(f'\nwritten to {AGG}: scores_all.csv, metrics_all.csv, summary.csv')
+
+# %% [markdown]
+# **Figures for a write-up.** Four figures, drawn only from the three files above and saved to
+# `plots/writeup/` at 200 dpi:
+#
+# 1. `learning_curves.png`: return over training, as a trailing mean over episodes.
+# 2. `final_scores.png`: each arm's final score with its spread and episode count.
+# 3. `world_model_losses.png`: the KL between posterior and prior, with the free-nats floor
+#    marked, and the decoder loss on a log scale. In the no-reconstruction arm that decoder
+#    trains on a detached latent, so its loss measures how much pixel detail the latent holds.
+# 4. `kl_vs_return.png`: final KL against final score, one point per arm.
+#
+# The line ends carry direct labels, the colours were checked for colour-blind separation,
+# and the free-nats value is read from the baseline run's own `config.yaml`. This cell needs
+# only `ROOT`: to redraw the figures later on a **CPU runtime**, run the Settings and "Where
+# are we running" cells, then this one.
+
+# %%
+import numpy as np, pandas as pd, matplotlib.pyplot as plt, yaml
+from matplotlib.ticker import FuncFormatter
+
+AGG = ROOT / 'records' / 'aggregate'
+FIG_DIR = ROOT / 'plots' / 'writeup'
+FIG_DIR.mkdir(parents=True, exist_ok=True)
+
+scores = pd.read_csv(AGG / 'scores_all.csv').rename(columns={'episode/score': 'score'})
+metrics = pd.read_csv(AGG / 'metrics_all.csv', low_memory=False)
+agg_summary = pd.read_csv(AGG / 'summary.csv')
+
+FIG_TASKS = {'crafter': 'Crafter', 'atari100k': 'Atari100k Pong'}
+FIG_XLABEL = {'crafter': 'environment steps', 'atari100k': 'environment frames'}
+FIG_ARMS = ['baseline', 'novalue', 'norewval', 'norecon']
+FIG_LABEL = {'baseline': 'Baseline (full DreamerV3)', 'novalue': 'No value gradients',
+             'norewval': 'No reward or value gradients', 'norecon': 'No reconstruction gradients'}
+FIG_SHORT = {'baseline': 'baseline', 'novalue': 'no value', 'norewval': 'no rew+val', 'norecon': 'no recon'}
+FIG_COLOR = {'baseline': '#0b0b0b', 'novalue': '#2a78d6', 'norewval': '#1baf7a', 'norecon': '#eb6834'}
+EP_WINDOW = {'crafter': 100, 'atari100k': 10}           # episodes per trailing mean (Pong episodes are long)
+METRIC_WINDOW = {'crafter': 20, 'atari100k': 3}         # log rows per trailing mean (one row per minute; Pong runs ~40 min)
+INK, INK2, GRID, SURF = '#0b0b0b', '#52514e', '#e4e3df', '#fcfcfb'
+
+plt.rcParams.update({
+    'figure.facecolor': SURF, 'axes.facecolor': SURF, 'savefig.facecolor': SURF,
+    'axes.edgecolor': INK2, 'axes.labelcolor': INK2, 'xtick.color': INK2, 'ytick.color': INK2,
+    'text.color': INK, 'axes.titlecolor': INK, 'axes.titlesize': 12, 'axes.titleweight': 'bold',
+    'axes.grid': True, 'grid.color': GRID, 'grid.linewidth': 0.8, 'axes.axisbelow': True,
+    'axes.spines.top': False, 'axes.spines.right': False, 'lines.linewidth': 2,
+    'font.size': 10, 'legend.frameon': False})
+THOUSANDS = FuncFormatter(lambda v, _: f'{v / 1e3:,.0f}k' if v else '0')
+
+def trailing(df, col, window):
+    """Trailing mean, drawn only once the window is full. Unlike a centred mean with zero
+    padding, it cannot bend the ends of a curve (the bug in the notebook's first plots)."""
+    df = df.dropna(subset=[col]).sort_values('step')
+    window = max(1, min(window, len(df)))          # smoke runs are shorter than one full window
+    return df.step.to_numpy(), df[col].rolling(window, min_periods=window).mean().to_numpy()
+
+def label_ends(ax, ends, fmt='{:.1f}'):
+    """Name and last value just right of each line's end, nudged apart so labels never overlap.
+    Call it last. Positions come from the final axis limits, so log axes are handled too."""
+    for x, y, arm in ends:
+        ax.plot(x, y, 'o', ms=6, color=FIG_COLOR[arm], mec=SURF, mew=2, zorder=5)
+    lo, hi = ax.get_ylim()                     # reading the limits forces autoscaling to finish
+    f = np.log10 if ax.get_yscale() == 'log' else (lambda v: v)
+    placed = []
+    for x, y, arm in sorted(ends, key=lambda e: e[1]):
+        fy = (f(y) - f(lo)) / (f(hi) - f(lo))  # position as a fraction of the axis height
+        fy = max(fy, placed[-1] + 0.075) if placed else fy
+        placed.append(fy)
+        ax.annotate(f'{FIG_SHORT[arm]}  {fmt.format(y)}', (1.02, fy), xycoords='axes fraction',
+                    color=INK2, fontsize=9, va='center', annotation_clip=False)
+
+def shared_legend(fig, y=1.07):
+    handles = [plt.Line2D([], [], color=FIG_COLOR[a], lw=2) for a in FIG_ARMS]
+    fig.legend(handles, [FIG_LABEL[a] for a in FIG_ARMS], loc='upper center', ncol=4,
+               bbox_to_anchor=(0.5, y), labelcolor=INK2)
+
+def save_fig(fig, name):
+    fig.savefig(FIG_DIR / name, dpi=200, bbox_inches='tight')
+    plt.show()
+    print('saved', FIG_DIR / name)
+
+def find_key(obj, key):
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            found = v if k == key else find_key(v, key)
+            if found is not None:
+                return found
+    return None
+
+try:   # read the KL floor from the run's own config instead of typing it in
+    cfg_path = next(ROOT.glob('runs/crafter/*/baseline/seed*/config.yaml'))
+    FREE_NATS = find_key(yaml.safe_load(cfg_path.read_text()), 'free_nats')
+except Exception as e:
+    FREE_NATS = None
+    print('could not read free_nats from config.yaml:', repr(e))
+print('free_nats from config.yaml:', FREE_NATS)
+
+# 1. Learning curves ------------------------------------------------------------------------
+fig, axes = plt.subplots(1, 2, figsize=(13, 4.3))
+for ax, (task, name) in zip(axes, FIG_TASKS.items()):
+    ends = []
+    for arm in FIG_ARMS:
+        x, y = trailing(scores[(scores.task == task) & (scores.arm == arm)], 'score', EP_WINDOW[task])
+        ax.plot(x, y, color=FIG_COLOR[arm])
+        ok = ~np.isnan(y)
+        if ok.any():
+            ends.append((x[ok][-1], y[ok][-1], arm))
+    ax.set_title(name, loc='left')
+    ax.set_xlabel(FIG_XLABEL[task])
+    ax.set_ylabel(f'episode return ({EP_WINDOW[task]}-episode trailing mean)')
+    ax.xaxis.set_major_formatter(THOUSANDS)
+    label_ends(ax, ends)
+fig.subplots_adjust(wspace=0.45)
+shared_legend(fig)
+save_fig(fig, 'learning_curves.png')
+
+# 2. Final performance ------------------------------------------------------------------------
+fig, axes = plt.subplots(1, 2, figsize=(12, 3.2))
+for ax, (task, name) in zip(axes, FIG_TASKS.items()):
+    s = agg_summary[agg_summary.task == task].set_index('arm').loc[FIG_ARMS[::-1]]
+    ypos = np.arange(len(s))
+    for yi, (arm, r) in zip(ypos, s.iterrows()):
+        ax.plot([r.final_score - r.final_score_std, r.final_score + r.final_score_std], [yi, yi],
+                color=FIG_COLOR[arm], lw=2, solid_capstyle='round', alpha=0.45)
+        ax.plot(r.final_score, yi, 'o', ms=9, color=FIG_COLOR[arm], mec=SURF, mew=2)
+        ax.annotate(f'{r.final_score:.1f}  (n={int(r.n_final_episodes)} ep.)', (r.final_score + r.final_score_std, yi),
+                    xytext=(8, 0), textcoords='offset points', ha='left', va='center', fontsize=9, color=INK2)
+    ax.set_yticks(ypos, [FIG_LABEL[a] for a in s.index])
+    ax.set_ylim(-0.6, len(s) - 0.2)
+    ax.set_xlim(right=ax.get_xlim()[1] + 0.3 * np.ptp(ax.get_xlim()))   # room for the labels
+    ax.grid(axis='y', visible=False)
+    ax.set_title(name, loc='left')
+    ax.set_xlabel('mean episode return, last 10% of training')
+fig.text(0.01, -0.08, 'Dot: mean over the episodes in the last 10% of the budget. Line: ±1 std across those '
+         'episodes (one seed, so this is not seed-to-seed variance).', fontsize=8.5, color=INK2)
+fig.subplots_adjust(wspace=0.9)
+save_fig(fig, 'final_scores.png')
+
+# 3. What the world model learned: KL (information taken from each frame) and decoder probe ----
+fig, axes = plt.subplots(2, 2, figsize=(13, 7.5))
+for row, (task, name) in enumerate(FIG_TASKS.items()):
+    for col, (key, title, log) in enumerate([
+            ('train/loss/dyn', 'KL between posterior and prior (nats)', False),
+            ('train/loss/image', 'Decoder reconstruction loss (log scale)', True)]):
+        ax, ends = axes[row, col], []
+        for arm in FIG_ARMS:
+            x, y = trailing(metrics[(metrics.task == task) & (metrics.arm == arm)], key, METRIC_WINDOW[task])
+            ax.plot(x, y, color=FIG_COLOR[arm])
+            ok = ~np.isnan(y)
+            if ok.any():
+                ends.append((x[ok][-1], y[ok][-1], arm))
+        if log:
+            ax.set_yscale('log')
+        if key == 'train/loss/dyn' and FREE_NATS is not None:
+            lo, hi = ax.get_ylim()
+            ax.set_ylim(max(0, min(lo, FREE_NATS - 0.15 * (hi - FREE_NATS))), hi)   # room for the note under the line
+            ax.axhline(FREE_NATS, color=INK2, lw=1, ls='--')
+            ax.annotate(f'free-nats floor ({FREE_NATS:g}): no gradient below this', (0.99, FREE_NATS),
+                        xycoords=('axes fraction', 'data'), xytext=(0, -4), textcoords='offset points',
+                        ha='right', va='top', fontsize=8.5, color=INK2)
+        ax.set_title(f'{name}: {title}', loc='left', fontsize=11)
+        ax.set_xlabel(FIG_XLABEL[task])
+        ax.xaxis.set_major_formatter(THOUSANDS)
+        label_ends(ax, ends, '{:.2f}' if task == 'atari100k' else '{:.1f}')
+fig.subplots_adjust(wspace=0.5, hspace=0.45)
+shared_legend(fig, y=0.97)
+fig.text(0.01, 0.005, 'Without reconstruction the decoder still trains, on a detached latent: it becomes a probe of '
+         'how much pixel detail the latent holds.', fontsize=8.5, color=INK2)
+save_fig(fig, 'world_model_losses.png')
+
+# 4. Information in the latent against return ---------------------------------------------------
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+for ax, (task, name) in zip(axes, FIG_TASKS.items()):
+    s = agg_summary[agg_summary.task == task].set_index('arm')
+    for arm in FIG_ARMS:
+        ax.plot(s.loc[arm, 'loss_dyn'], s.loc[arm, 'final_score'], 'o', ms=10, color=FIG_COLOR[arm], mec=SURF, mew=2)
+        ax.annotate(FIG_SHORT[arm], (s.loc[arm, 'loss_dyn'], s.loc[arm, 'final_score']), xytext=(8, -3),
+                    textcoords='offset points', fontsize=9, color=INK2)
+    if FREE_NATS is not None:
+        ax.axvline(FREE_NATS, color=INK2, lw=1, ls='--')
+    ax.set_title(name, loc='left')
+    ax.set_xlabel('KL, mean over last 10% of training (nats)')
+    ax.set_ylabel('episode return, last 10%')
+    ax.margins(0.2)
+fig.text(0.01, -0.06, 'One point per arm, one seed each. Four points show a pattern, not a fitted relationship.',
+         fontsize=8.5, color=INK2)
+fig.subplots_adjust(wspace=0.3)
+save_fig(fig, 'kl_vs_return.png')
+
+# The same numbers as a table, for anyone who cannot tell the colours apart
+cols = ['task', 'arm', 'final_score', 'final_score_std', 'n_final_episodes', 'loss_dyn', 'loss_image']
+print(agg_summary[cols].round(2).to_string(index=False))
