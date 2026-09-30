@@ -713,11 +713,12 @@ print('\nAll runs in the matrix are complete.')
 # **Reference data.** The repo ships the paper's own Atari100k curves in
 # `scores/atari100k-dreamerv3.json.gz` (5 seeds per game, x in frames) and PPO's; they are
 # overlaid on the Pong plot. For Crafter no per-run curve is shipped, so Crafter compares arms
-# against each other only. Both the paper's Table 4 (Atari100k, DreamerV3 on Pong: −4; random
-# −21; human 15) and its ablation curves were produced with the **200M** model over **5
-# seeds**, and the Atari ablations in the paper used the full 200M-frame Atari suite, not
-# Atari100k; so the expectation for a smaller model is the *ordering* of the arms, not the
-# numbers.
+# against each other only. The paper's Atari100k scores (Supplementary Table 4: DreamerV3 on
+# Pong −4, random −21, human 15) come from its default **200M** model over **5 seeds**. Its
+# learning-signal ablation (Supplementary Figure 9) covers 14 tasks, among them Crafter to 5M
+# steps and three Atari games (Atlantis, Breakout, Montezuma's Revenge) to 20M steps, but not
+# Pong and not Atari100k; the ablation section does not state its model size or seed count.
+# So the expectation for a smaller model is the *ordering* of the arms, not the numbers.
 
 # %%
 import gzip
@@ -741,10 +742,16 @@ def load_runs():
     return runs
 
 def smooth(y, k):
-    """Centred running mean over k points; the raw points are always drawn as well."""
+    """Trailing mean over the last k points, drawn only once the window is full; the raw
+    points are always drawn as well. A centred mean padded with zeros would drag both ends
+    of every curve toward zero, which on Pong made a flat curve at -21 appear to rise."""
+    y = np.asarray(y, float)
     if len(y) < k:
-        return np.asarray(y, float)
-    return np.convolve(y, np.ones(k) / k, mode='same')
+        return y
+    out = np.full(len(y), np.nan)
+    c = np.cumsum(np.insert(y, 0, 0.0))
+    out[k - 1:] = (c[k:] - c[:-k]) / k
+    return out
 
 def reference_curves(game='pong'):
     out = {}

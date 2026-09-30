@@ -601,8 +601,16 @@ print(f'{RUN_DIR}\n{len(SCORES)} finished episodes, last logged step {last_step(
       f'{"complete" if DONE else "incomplete"}')
 
 def smooth(y, k):
-    """Centred running mean over k points; the raw points are always drawn as well."""
-    return np.convolve(y, np.ones(k) / k, mode='same') if len(y) >= k else np.asarray(y, float)
+    """Trailing mean over the last k points, drawn only once the window is full; the raw
+    points are always drawn as well. A centred mean padded with zeros would drag both ends
+    of every curve toward zero, which on Pong made a flat curve at -21 appear to rise."""
+    y = np.asarray(y, float)
+    if len(y) < k:
+        return y
+    out = np.full(len(y), np.nan)
+    c = np.cumsum(np.insert(y, 0, 0.0))
+    out[k - 1:] = (c[k:] - c[:-k]) / k
+    return out
 
 def reference_curves(game):
     out = {}

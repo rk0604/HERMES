@@ -19,10 +19,12 @@ From the paper and its supplement (`references/`):
 * Four arms: **Dreamer**, **No value gradients**, **No reward or value gradients**,
   **No reconstruction gradients**. The ablations *stop gradients* from a loss into the
   world-model representation; every loss is still computed and its head still trains.
-* 14 tasks, the **200M** model, one A100 per run, **5 seeds**, mean and one standard
-  deviation reported. Crafter was run to 5M steps in the ablation figure; the Atari
-  ablations used Atlantis, Breakout and Montezuma at the full 200M-frame budget, not the
-  Atari100k benchmark.
+* 14 tasks, with per-task curves in Supplementary Figure 9: Crafter to 5M steps; Atari
+  Atlantis, Breakout and Montezuma's Revenge to 20M steps (not Atari100k, and not Pong);
+  plus DMLab, PinPad, ProcGen, proprioceptive and visual control. The ablation section
+  does not state its model size or seed count; the paper's defaults are the **200M** model
+  and **5 seeds** per benchmark, one A100 per run, and the curves show a mean with shaded
+  spread.
 * Finding: Dreamer "rests predominantly on the unsupervised reconstruction loss of its
   world model"; removing reward and value gradients costs little, removing reconstruction
   gradients costs a lot on average.
